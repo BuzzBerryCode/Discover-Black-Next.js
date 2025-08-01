@@ -469,13 +469,13 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
       <div className="flex flex-col gap-[10px] lg:gap-[12px] xl:gap-[15px] w-full">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-[10px] lg:gap-[12px] xl:gap-[15px]">
-            <h2 className="font-semibold text-[16px] lg:text-[18px] xl:text-[20px] text-neutral-100 leading-[20px] lg:leading-[24px] xl:leading-[28px] font-['Inter',Helvetica]">
+            <h2 className="font-semibold text-[16px] lg:text-[18px] xl:text-[20px] text-neutral-100 leading-[20px] lg:leading-[24px] xl:leading-[28px] font-['Inter',Helvetica] dark:text-gray-100">
               Find Creators
             </h2>
             
             <Separator 
               orientation="vertical" 
-              className="h-[20px] lg:h-[24px] xl:h-[28px] bg-[#e1e5e9]" 
+              className="h-[20px] lg:h-[24px] xl:h-[28px] bg-[#e1e5e9] dark:bg-gray-600" 
             />
             
             <AIToggle
@@ -509,7 +509,7 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
               <div className="flex items-center flex-shrink-0">
                 <Separator 
                   orientation="vertical" 
-                  className="h-[28px] lg:h-[32px] xl:h-[36px] mr-[6px] lg:mr-[8px] xl:mr-[10px]" 
+                  className="h-[28px] lg:h-[32px] xl:h-[36px] mr-[6px] lg:mr-[8px] xl:mr-[10px] dark:bg-gray-600" 
                 />
 
                 <Button
@@ -519,8 +519,8 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
                   disabled={selectedCategories.size === 0}
                   className={`h-[28px] lg:h-[32px] xl:h-[36px] py-[4px] lg:py-[6px] xl:py-[8px] px-[6px] lg:px-[10px] xl:px-[12px] rounded-[8px] font-medium text-[11px] lg:text-[12px] xl:text-[13px] flex items-center gap-[4px] lg:gap-[6px] xl:gap-[8px] transition-colors whitespace-nowrap mr-[6px] lg:mr-[8px] xl:mr-[10px] ${
                     selectedCategories.size === 0
-                      ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-basewhite border-[#dbe2eb] text-neutral-new900 hover:bg-gray-50'
+                      ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-500'
+                      : 'bg-basewhite border-[#dbe2eb] text-neutral-new900 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700'
                   }`}
                 >
                   Clear All
@@ -532,7 +532,7 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
                     variant="outline"
                     onClick={toggleDropdown}
                     type="button"
-                    className="h-[28px] lg:h-[32px] xl:h-[36px] py-[4px] lg:py-[6px] xl:py-[8px] px-[6px] lg:px-[10px] xl:px-[12px] bg-basewhite border-[#dbe2eb] rounded-[8px] font-medium text-[11px] lg:text-[12px] xl:text-[13px] text-neutral-new900 flex items-center gap-[4px] lg:gap-[6px] xl:gap-[8px] hover:bg-gray-50 transition-colors whitespace-nowrap"
+                    className="h-[28px] lg:h-[32px] xl:h-[36px] py-[4px] lg:py-[6px] xl:py-[8px] px-[6px] lg:px-[10px] xl:px-[12px] bg-basewhite border-[#dbe2eb] rounded-[8px] font-medium text-[11px] lg:text-[12px] xl:text-[13px] text-neutral-new900 flex items-center gap-[4px] lg:gap-[6px] xl:gap-[8px] hover:bg-gray-50 transition-colors whitespace-nowrap dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
                   >
                     View All
                     <Icon
@@ -545,53 +545,28 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
                   </Button>
 
                   {isDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-2 w-[280px] sm:w-[320px] lg:w-[360px] bg-white border border-[#e5e7eb] rounded-[12px] shadow-lg overflow-hidden max-h-[90vh] z-[9999]">
+                    <div className="absolute top-full right-0 mt-2 w-[280px] sm:w-[320px] lg:w-[360px] bg-white border border-[#e5e7eb] rounded-[12px] shadow-lg overflow-hidden max-h-[90vh] z-[9999] dark:bg-gray-800 dark:border-gray-600">
                       <div className="p-3 sm:p-4">
                         <div className="mb-3 sm:mb-4">
-                          <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#111827] mb-1">
-                            Filter by Niches
+                          <h3 className="font-semibold text-[14px] sm:text-[16px] text-neutral-100 dark:text-gray-100">
+                            All Categories
                           </h3>
+                          <p className="text-[12px] sm:text-[13px] text-neutral-new600 dark:text-gray-400">
+                            Select categories to filter creators
+                          </p>
                         </div>
-                                                  <div className="max-h-[240px] sm:max-h-[280px] lg:max-h-[320px] overflow-y-auto">
-                            <div className="space-y-1">
-                              {getOrderedCategories().map((category, index) => (
-                                <div
-                                  key={`dropdown-category-${index}`}
-                                  className={`flex items-center space-x-2 sm:space-x-3 p-2 rounded-[6px] cursor-pointer transition-colors ${
-                                    selectedCategories.has(category)
-                                      ? 'bg-blue-100 hover:bg-blue-200'
-                                      : 'hover:bg-gray-50'
-                                  }`}
-                                  onClick={() => handleCategorySelect(category)}
-                                >
-                                  <span className={`text-[12px] sm:text-[14px] cursor-pointer flex-1 ${
-                                    selectedCategories.has(category)
-                                      ? 'text-blue-700 font-medium'
-                                      : 'text-[#111827]'
-                                  }`}>
-                                    {category}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
                         
-                        <div className="p-2 sm:p-3 border-t border-[#f3f4f6] flex justify-between items-center">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={handleClearAll}
-                            className="h-7 sm:h-8 px-2 sm:px-3 text-[11px] sm:text-[12px] font-medium text-[#6b7280] hover:text-[#374151] hover:bg-[#f9fafb]"
-                          >
-                            Reset
-                          </Button>
-                          <Button
-                            size="sm"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="h-7 sm:h-8 px-3 sm:px-4 bg-[linear-gradient(90deg,#557EDD_0%,#6C40E4_100%)] hover:bg-[linear-gradient(90deg,#4A6BC8_0%,#5A36C7_100%)] text-white text-[11px] sm:text-[12px] font-medium rounded-[6px] border-0"
-                          >
-                            Confirm
-                          </Button>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[300px] overflow-y-auto">
+                          {getOrderedCategories().map((category, index) => (
+                            <Button
+                              key={`dropdown-category-${index}`}
+                              variant="outline"
+                              onClick={() => handleCategorySelect(category)}
+                              className={`h-[32px] py-[4px] px-[8px] rounded-[8px] font-medium text-[12px] transition-colors cursor-pointer flex-shrink-0 border whitespace-nowrap ${getNicheStyles(category, selectedCategories.has(category))}`}
+                            >
+                              {category}
+                            </Button>
+                          ))}
                         </div>
                       </div>
                     </div>
@@ -602,22 +577,23 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
           </div>
         )}
 
-        {/* Filter controls row */}
-        <div 
-          ref={filterRowRef}
-          className="flex flex-col sm:flex-row items-start sm:items-center gap-[8px] lg:gap-[8px] xl:gap-[10px] w-full"
-        >
-          <div className="flex items-center gap-[4px] sm:gap-[6px] lg:gap-[8px] xl:gap-[10px] flex-1 w-full min-w-0 overflow-hidden">
-            {filterOptions.map((filter, index) => (
-              <div key={`filter-${index}`} className="relative flex-1 min-w-0">
+        {/* Filter buttons row */}
+        <div className="flex items-center justify-between w-full gap-[6px] lg:gap-[8px] xl:gap-[10px]">
+          <div className="flex items-center gap-[6px] lg:gap-[8px] xl:gap-[10px] flex-1 min-w-0 overflow-x-auto">
+            {filterOptions.map((filter) => (
+              <div key={filter.key} className="relative flex-shrink-0">
                 <Button
-                  ref={(el) => (filterButtonRefs.current[filter.key] = el)}
+                  ref={(el) => {
+                    if (filterButtonRefs.current) {
+                      filterButtonRefs.current[filter.key] = el;
+                    }
+                  }}
                   variant="outline"
                   onClick={() => toggleFilterDropdown(filter.key)}
-                  className={`h-[28px] lg:h-[32px] xl:h-[36px] py-[4px] lg:py-[6px] xl:py-[8px] px-[3px] sm:px-[4px] lg:px-[6px] xl:px-[8px] rounded-[8px] font-medium text-[11px] lg:text-[12px] xl:text-[13px] flex items-center justify-center gap-[2px] sm:gap-[3px] lg:gap-[4px] xl:gap-[6px] transition-colors w-full min-w-0 ${
-                    appliedFilters.has(filter.key)
-                      ? 'bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200'
-                      : 'bg-basewhite border-[#dbe2eb] text-neutral-new900 hover:bg-gray-50'
+                  className={`h-[28px] lg:h-[32px] xl:h-[36px] py-[4px] lg:py-[6px] xl:py-[8px] px-[6px] lg:px-[10px] xl:px-[12px] rounded-[8px] font-medium text-[11px] lg:text-[12px] xl:text-[13px] flex items-center gap-[3px] lg:gap-[4px] xl:gap-[6px] transition-colors cursor-pointer flex-shrink-0 border whitespace-nowrap ${
+                    isFilterModified(filter.key)
+                      ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/20 dark:border-blue-700 dark:text-blue-400'
+                      : 'bg-basewhite border-[#dbe2eb] text-neutral-new900 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700'
                   }`}
                 >
                   <Icon
@@ -625,7 +601,7 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
                     className="w-[10px] h-[10px] sm:w-[12px] sm:h-[12px] lg:w-[14px] lg:h-[14px] xl:w-[16px] xl:h-[16px] flex-shrink-0"
                     alt={`${filter.name} icon`}
                   />
-                  <span className="hidden sm:block lg:hidden truncate min-w-0 text-[10px] sm:text-[11px]">
+                  <span className="hidden sm:block lg:hidden truncate min-w-0">
                     {filter.name === "Buzz Score" ? "Buzz" : 
                      filter.name === "Engagement" ? "Engage" :
                      filter.name === "Followers" ? "Follow" :
@@ -702,7 +678,7 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
           <div className="flex items-center gap-[6px] lg:gap-[8px] xl:gap-[10px] flex-shrink-0">
             <Separator 
               orientation="vertical" 
-              className="hidden sm:block h-[28px] lg:h-[32px] xl:h-[36px]" 
+              className="hidden sm:block h-[28px] lg:h-[32px] xl:h-[36px] dark:bg-gray-600" 
             />
 
             <Button

@@ -100,6 +100,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
           lg:w-[60%] lg:rounded-tl-[15px] lg:rounded-bl-[15px]
           xl:w-[50%] xl:rounded-tl-[16px] xl:rounded-bl-[16px]
           px-[4px]
+          dark:bg-gray-900 dark:border-gray-700
         `}
         style={{ borderWidth: '1px' }}
       >
@@ -111,7 +112,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
               href={creator.social_media[0]?.url} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="w-[65px] h-[65px] md:w-[77px] md:h-[77px] lg:w-[87px] lg:h-[87px] xl:w-[87px] xl:h-[87px] bg-[#384455] rounded-full overflow-hidden flex-shrink-0 relative group hover:scale-102 transition-all duration-300 ease-out border-2 border-gray-200"
+              className="w-[65px] h-[65px] md:w-[77px] md:h-[77px] lg:w-[87px] lg:h-[87px] xl:w-[87px] xl:h-[87px] bg-[#384455] rounded-full overflow-hidden flex-shrink-0 relative group hover:scale-102 transition-all duration-300 ease-out border-2 border-gray-200 dark:border-gray-600"
             >
               {creator.profile_pic ? (
                 <img 
@@ -136,7 +137,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                       window.open(primarySocial.url, '_blank');
                     }
                   }}
-                  className="text-[#06152b] text-[12px] md:text-[19px] lg:text-[18px] xl:text-[22px] font-bold hover:text-[#557EDD] transition-colors cursor-pointer text-left"
+                  className="text-[#06152b] text-[12px] md:text-[19px] lg:text-[18px] xl:text-[22px] font-bold hover:text-[#557EDD] transition-colors cursor-pointer text-left dark:text-gray-100"
                 >
                   {creator.username}
                 </button>
@@ -148,11 +149,11 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                       window.open(primarySocial.url, '_blank');
                     }
                   }}
-                  className="text-[#71737c] text-[12px] md:text-[14px] lg:text-[16px] xl:text-[18px] font-medium hover:text-[#557EDD] transition-all duration-200 cursor-pointer text-left"
+                  className="text-[#71737c] text-[12px] md:text-[14px] lg:text-[16px] xl:text-[18px] font-medium hover:text-[#557EDD] transition-all duration-200 cursor-pointer text-left dark:text-gray-400"
                 >
                   {creator.username_tag || `@${creator.username.toLowerCase().replace(/\s+/g, '')}`}
                 </button>
-                <div className="flex items-center gap-[2px] md:gap-[2px] lg:gap-[3px] bg-gray-100 rounded-full px-2 py-1">
+                <div className="flex items-center gap-[2px] md:gap-[2px] lg:gap-[3px] bg-gray-100 rounded-full px-2 py-1 dark:bg-gray-700">
                   {creator.social_media.map((social, iconIndex) => (
                     <Icon
                       key={iconIndex}
@@ -169,28 +170,28 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                 {creator.email && creator.email !== '' && creator.email !== '0' && (
                   <button
                     onClick={handleEmailClick}
-                    className="flex items-center gap-[3px] md:gap-[4px] lg:gap-[6px] px-[8px] md:px-[10px] lg:px-[12px] py-[4px] md:py-[6px] lg:py-[6px] xl:py-[6px] bg-white rounded-[10px] hover:bg-[#F0F0F0] transition-colors border border-[#E5E7EB]"
+                    className="flex items-center gap-[3px] md:gap-[4px] lg:gap-[6px] px-[8px] md:px-[10px] lg:px-[12px] py-[4px] md:py-[6px] lg:py-[6px] xl:py-[6px] bg-white rounded-[10px] hover:bg-[#F0F0F0] transition-colors border border-[#E5E7EB] dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
                   >
                     <Icon
                       name="EmailIcon.svg"
                       className="w-[11px] h-[11px] md:w-[13px] md:h-[13px] lg:w-[15px] lg:h-[15px]"
                       alt="Email"
                     />
-                    <span className="text-[10px] md:text-[12px] lg:text-[13px] font-medium text-gray-700">
+                    <span className="text-[10px] md:text-[12px] lg:text-[13px] font-medium text-gray-700 dark:text-gray-300">
                       {emailButtonText}
                     </span>
                   </button>
                 )}
                 <button
                   onClick={handleDMClick}
-                  className="flex items-center gap-[3px] md:gap-[4px] lg:gap-[6px] px-[8px] md:px-[10px] lg:px-[12px] py-[4px] md:py-[6px] lg:py-[6px] xl:py-[6px] bg-white rounded-[10px] hover:bg-[#F0F0F0] transition-colors border border-[#E5E7EB]"
+                  className="flex items-center gap-[3px] md:gap-[4px] lg:gap-[6px] px-[8px] md:px-[10px] lg:px-[12px] py-[4px] md:py-[6px] lg:py-[6px] xl:py-[6px] bg-white rounded-[10px] hover:bg-[#F0F0F0] transition-colors border border-[#E5E7EB] dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
                 >
                   <Icon
                     name="DMIcon.svg"
                     className="w-[11px] h-[11px] md:w-[13px] md:h-[13px] lg:w-[15px] lg:h-[15px]"
                     alt="DM"
                   />
-                  <span className="text-[10px] md:text-[12px] lg:text-[13px] font-medium text-gray-700">
+                  <span className="text-[10px] md:text-[12px] lg:text-[13px] font-medium text-gray-700 dark:text-gray-300">
                     DM Creator
                   </span>
                 </button>
@@ -201,7 +202,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
           {/* Match Score and Close Button */}
           <div className="flex items-center gap-[6px] md:gap-[8px] lg:gap-[10px] flex-shrink-0">
             {currentMode === 'ai' && (
-              <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-[8px] md:px-[12px] lg:px-[16px] py-[4px] md:py-[6px] lg:py-[8px] rounded-[12px] md:rounded-[16px] font-bold text-[11px] md:text-[13px] lg:text-[15px] shadow-sm border border-green-200">
+              <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-[8px] md:px-[12px] lg:px-[16px] py-[4px] md:py-[6px] lg:py-[8px] rounded-[12px] md:rounded-[16px] font-bold text-[11px] md:text-[13px] lg:text-[15px] shadow-sm border border-green-200 dark:bg-green-900/20 dark:border-green-700 dark:text-green-400">
                 Match {creator.match_score || 0}%
               </div>
             )}
@@ -211,7 +212,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
             >
               <Icon
                 name="CloseIcon.svg"
-                className="w-[13px] h-[13px] md:w-[15px] md:h-[15px] lg:w-[17px] lg:h-[17px] text-gray-600"
+                className="w-[13px] h-[13px] md:w-[15px] md:h-[15px] lg:w-[17px] lg:h-[17px] text-gray-600 dark:text-gray-400"
                 alt="Close"
               />
             </button>
@@ -224,10 +225,10 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
             <div className="flex items-center gap-[5px] md:gap-[6px] lg:gap-[8px]">
               <Icon
                 name="LocationIcon.svg"
-                className="w-[12px] h-[12px] md:w-[14px] md:h-[14px] lg:w-[16px] lg:h-[16px] text-gray-600"
+                className="w-[12px] h-[12px] md:w-[14px] md:h-[14px] lg:w-[16px] lg:h-[16px] text-gray-600 dark:text-gray-400"
                 alt="Location"
               />
-              <span className="text-[#71737c] text-[12px] md:text-[14px] lg:text-[16px] font-medium">
+              <span className="text-[#71737c] text-[12px] md:text-[14px] lg:text-[16px] font-medium dark:text-gray-400">
                 {creator.location}
               </span>
             </div>
@@ -236,7 +237,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
 
         {/* Bio */}
         <div className="px-[16px] md:px-[19px] mb-[12px] md:mb-[17px]">
-          <p className="text-[#71737c] text-[12px] md:text-[14px] lg:text-[16px] font-medium leading-[18px] md:leading-[20px] lg:leading-[24px]">
+          <p className="text-[#71737c] text-[12px] md:text-[14px] lg:text-[16px] font-medium leading-[18px] md:leading-[20px] lg:leading-[24px] dark:text-gray-400">
             {creator.bio}
           </p>
         </div>
@@ -250,8 +251,8 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                 variant="outline"
                 className={`px-[8px] md:px-[12px] lg:px-[16px] py-[2px] md:py-[4px] lg:py-[6px] rounded-[6px] md:rounded-[8px] ${
                   niche.type === 'primary' 
-                    ? 'bg-sky-50 border-[#dbe2eb] text-neutral-new900' 
-                    : 'bg-green-50 border-green-200 text-green-700'
+                    ? 'bg-sky-50 border-[#dbe2eb] text-neutral-new900 dark:bg-blue-900/20 dark:border-blue-700 dark:text-blue-400' 
+                    : 'bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-700 dark:text-green-400'
                 }`}
               >
                 <span className="font-medium text-[11px] md:text-[13px] lg:text-[15px]">
@@ -266,7 +267,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
         <div className="px-[16px] md:px-[19px] mb-[12px] md:mb-[17px]">
           <div className="grid grid-cols-5 gap-[2px] md:gap-[3px] lg:gap-[4px]">
             {/* Followers */}
-            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px]">
+            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px] dark:bg-gray-800">
               <div className="flex items-center justify-center">
                 <Icon
                   name="FollowerIcon.svg"
@@ -275,10 +276,10 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                 />
               </div>
               <div className="text-center">
-                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1">
+                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1 dark:text-gray-100">
                   {creator.followers.toLocaleString()}
                 </div>
-                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1">
+                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1 dark:text-gray-400">
                   Followers
                 </div>
                 <div className="flex items-center justify-center gap-[2px] md:gap-1">
@@ -293,19 +294,19 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
             </div>
 
             {/* Avg. Views */}
-            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px]">
+            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px] dark:bg-gray-800">
               <div className="flex items-center justify-center">
                 <Icon
                   name="AvgViewsIcon.svg"
                   className="w-[24px] h-[24px] md:w-[40px] md:h-[40px] lg:w-[44px] lg:h-[44px]"
-                  alt="Avg. Views"
+                  alt="Views"
                 />
               </div>
               <div className="text-center">
-                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1">
+                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1 dark:text-gray-100">
                   {creator.avg_views.toLocaleString()}
                 </div>
-                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1">
+                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1 dark:text-gray-400">
                   Avg. Views
                 </div>
                 <div className="flex items-center justify-center gap-[2px] md:gap-1">
@@ -404,7 +405,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
 
         {/* Buzz Score Card */}
         <div className="px-[16px] md:px-[19px] mb-[12px] md:mb-[17px]">
-          <div className="bg-white rounded-[8px] md:rounded-[12px] px-[12px] md:px-[20px] lg:px-[24px] pt-[10px] md:pt-[13px] lg:pt-[12px] pb-[12px] md:pb-[20px] lg:pb-[24px]">
+          <div className="bg-white rounded-[8px] md:rounded-[12px] px-[12px] md:px-[20px] lg:px-[24px] pt-[10px] md:pt-[13px] lg:pt-[12px] pb-[12px] md:pb-[20px] lg:pb-[24px] dark:bg-gray-800">
             <div className="flex items-center justify-between mb-[8px] md:mb-[12px] lg:mb-[15px]">
               <div className="flex items-center gap-[7px] lg:gap-[10px]">
                 <span className="text-[#00518B] text-[12px] md:text-[15px] lg:text-[17px] font-bold">
@@ -438,7 +439,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                 {showBuzzScoreInfo && (
                   <div
                     ref={buzzScoreInfoRef}
-                    className="absolute top-full right-0 mt-2 w-[280px] sm:w-[320px] bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4"
+                    className="absolute top-full right-0 mt-2 w-[280px] sm:w-[320px] bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4 dark:bg-gray-800 dark:border-gray-700"
                   >
                     <div className="flex items-start gap-3">
                       <div>

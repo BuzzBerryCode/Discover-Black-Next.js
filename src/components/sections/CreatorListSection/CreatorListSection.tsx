@@ -107,37 +107,37 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
   if (loading) {
     return (
       <section className="flex flex-col items-start gap-[5px] p-[15px] lg:p-[20px] xl:p-[25px] bg-white rounded-[12px] flex-1 overflow-hidden shadow-sm">
-        <div className="w-full h-[100px] bg-gray-100 rounded-lg animate-pulse mb-4" />
+        <div className="w-full h-[100px] bg-gray-100 rounded-lg animate-pulse mb-4 dark:bg-gray-700" />
         <div className="flex-1 overflow-y-auto w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-[12px] lg:gap-[15px] xl:gap-[18px] 2xl:gap-[20px] w-full pb-4">
             {Array(6).fill(0).map((_, index) => (
               <Card key={index} className="w-full rounded-[15px] p-0 border-2 shadow-sm animate-pulse">
                 <CardContent className="flex flex-col gap-[8px] lg:gap-[10px] xl:gap-[12px] p-[12px] lg:p-[15px] xl:p-[18px]">
                   <div className="flex w-full items-start justify-between">
-                    <div className="w-[50px] h-[50px] lg:w-[60px] lg:h-[60px] xl:w-[70px] xl:h-[70px] bg-gray-200 rounded-full" />
+                    <div className="w-[50px] h-[50px] lg:w-[60px] lg:h-[60px] xl:w-[70px] xl:h-[70px] bg-gray-200 rounded-full dark:bg-gray-600" />
                     <div className="flex items-center gap-2">
-                      <div className="w-12 h-6 bg-gray-200 rounded" />
-                      <div className="w-5 h-5 bg-gray-200 rounded" />
+                      <div className="w-12 h-6 bg-gray-200 rounded dark:bg-gray-600" />
+                      <div className="w-5 h-5 bg-gray-200 rounded dark:bg-gray-600" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <div className="h-4 bg-gray-200 rounded w-3/4" />
-                    <div className="h-3 bg-gray-200 rounded w-full" />
-                    <div className="h-3 bg-gray-200 rounded w-2/3" />
+                    <div className="h-4 bg-gray-200 rounded w-3/4 dark:bg-gray-600" />
+                    <div className="h-3 bg-gray-200 rounded w-full dark:bg-gray-600" />
+                    <div className="h-3 bg-gray-200 rounded w-2/3 dark:bg-gray-600" />
                   </div>
                   <div className="flex gap-2">
-                    <div className="flex-1 h-16 bg-gray-200 rounded" />
-                    <div className="flex-1 h-16 bg-gray-200 rounded" />
-                    <div className="flex-1 h-16 bg-gray-200 rounded" />
+                    <div className="flex-1 h-16 bg-gray-200 rounded dark:bg-gray-600" />
+                    <div className="flex-1 h-16 bg-gray-200 rounded dark:bg-gray-600" />
+                    <div className="flex-1 h-16 bg-gray-200 rounded dark:bg-gray-600" />
                   </div>
                   <div className="flex gap-2">
-                    <div className="h-6 w-16 bg-gray-200 rounded" />
-                    <div className="h-6 w-20 bg-gray-200 rounded" />
+                    <div className="h-6 w-16 bg-gray-200 rounded dark:bg-gray-600" />
+                    <div className="h-6 w-20 bg-gray-200 rounded dark:bg-gray-600" />
                   </div>
                   <div className="flex gap-1">
-                    <div className="flex-1 h-20 bg-gray-200 rounded" />
-                    <div className="flex-1 h-20 bg-gray-200 rounded" />
-                    <div className="flex-1 h-20 bg-gray-200 rounded" />
+                    <div className="flex-1 h-20 bg-gray-200 rounded dark:bg-gray-600" />
+                    <div className="flex-1 h-20 bg-gray-200 rounded dark:bg-gray-600" />
+                    <div className="flex-1 h-20 bg-gray-200 rounded dark:bg-gray-600" />
                   </div>
                 </CardContent>
               </Card>
@@ -152,7 +152,7 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
     return (
       <section className="flex flex-col items-center justify-center gap-4 p-[15px] lg:p-[20px] xl:p-[25px] bg-white rounded-[12px] flex-1 overflow-hidden shadow-sm">
         <div className="text-red-500 text-lg font-medium">Error loading creators</div>
-        <div className="text-gray-600 text-sm">{error}</div>
+        <div className="text-gray-600 text-sm dark:text-gray-400">{error}</div>
         <Button onClick={() => window.location.reload()} variant="outline">
           Try Again
         </Button>
@@ -166,13 +166,13 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
       <header className="flex flex-col sm:flex-row sm:items-center justify-between w-full flex-shrink-0 mb-[10px] gap-3 sm:gap-4 xl:gap-6 min-w-0 overflow-hidden">
         {/* Left side - View mode toggle */}
         <div className="flex items-center gap-[6px] lg:gap-[8px] xl:gap-[10px] min-w-0 overflow-hidden">
-          <div className="inline-flex items-center h-[28px] lg:h-[32px] xl:h-[36px] rounded-[8px] border border-solid border-[#dbe2eb] bg-white flex-shrink-0 min-w-0 overflow-hidden">
+          <div className="inline-flex items-center h-[28px] lg:h-[32px] xl:h-[36px] rounded-[8px] border border-solid border-[#dbe2eb] bg-white flex-shrink-0 min-w-0 overflow-hidden dark:bg-gray-800 dark:border-gray-600">
             <button
               onClick={() => handleViewModeChange('cards')}
               className={`inline-flex items-center justify-center gap-[4px] lg:gap-[6px] xl:gap-[8px] px-[6px] lg:px-[10px] xl:px-[12px] py-[4px] lg:py-[6px] xl:py-[8px] h-full min-w-0 flex-shrink-0 transition-colors duration-200 text-[11px] lg:text-[12px] xl:text-[13px] font-medium ${
                 viewMode === 'cards' 
-                  ? 'bg-[#f1f4f9] text-[#111827]' 
-                  : 'bg-transparent text-[#999999] hover:bg-gray-50'
+                  ? 'bg-[#f1f4f9] text-[#111827] dark:bg-gray-700 dark:text-gray-100' 
+                  : 'bg-transparent text-[#999999] hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-700'
               }`}
               >
                 <Icon
@@ -183,14 +183,14 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
               <span className="font-medium hidden sm:inline">Cards</span>
             </button>
             
-            <div className="w-px h-[16px] sm:h-[20px] lg:h-[24px] xl:h-[28px] bg-[#dbe2eb] flex-shrink-0"></div>
+            <div className="w-px h-[16px] sm:h-[20px] lg:h-[24px] xl:h-[28px] bg-[#dbe2eb] flex-shrink-0 dark:bg-gray-600"></div>
             
             <button
               onClick={() => handleViewModeChange('list')}
               className={`inline-flex items-center justify-center gap-[4px] lg:gap-[6px] xl:gap-[8px] px-[6px] lg:px-[10px] xl:px-[12px] py-[4px] lg:py-[6px] xl:py-[8px] h-full min-w-0 flex-shrink-0 transition-colors duration-200 text-[11px] lg:text-[12px] xl:text-[13px] font-medium ${
                 viewMode === 'list' 
-                  ? 'bg-[#f1f4f9] text-[#111827]' 
-                  : 'bg-transparent text-[#999999] hover:bg-gray-50'
+                  ? 'bg-[#f1f4f9] text-[#111827] dark:bg-gray-700 dark:text-gray-100' 
+                  : 'bg-transparent text-[#999999] hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-700'
               }`}
               >
                 <Icon
@@ -207,14 +207,14 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-[6px] lg:gap-[8px] xl:gap-[10px] w-full sm:w-auto min-w-0 overflow-hidden">
           <Button
             variant="outline"
-            className="h-[28px] lg:h-[32px] xl:h-[36px] rounded-[8px] flex items-center justify-center gap-[4px] lg:gap-[6px] xl:gap-[8px] px-[6px] lg:px-[10px] xl:px-[12px] py-[4px] lg:py-[6px] xl:py-[8px] text-[11px] lg:text-[12px] xl:text-[13px] font-medium w-full sm:w-auto"
+            className="h-[28px] lg:h-[32px] xl:h-[36px] rounded-[8px] flex items-center justify-center gap-[4px] lg:gap-[6px] xl:gap-[8px] px-[6px] lg:px-[10px] xl:px-[12px] py-[4px] lg:py-[6px] xl:py-[8px] text-[11px] lg:text-[12px] xl:text-[13px] font-medium w-full sm:w-auto dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
           >
             <Icon
               name="SavedListIcon.svg"
               className="w-[8px] h-[8px] lg:w-[10px] lg:h-[10px] xl:w-[12px] xl:h-[12px] flex-shrink-0"
               alt="Save in list icon"
             />
-            <span className="font-medium text-neutral-new900 truncate min-w-0">
+            <span className="font-medium text-neutral-new900 truncate min-w-0 dark:text-gray-200">
               Save in a list
             </span>
           </Button>
@@ -222,16 +222,16 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
             <Button
               onClick={handleSelectAll}
               variant="outline"
-            className="h-[28px] lg:h-[32px] xl:h-[36px] rounded-[8px] flex items-center justify-center gap-[4px] lg:gap-[6px] xl:gap-[8px] px-[6px] lg:px-[10px] xl:px-[12px] py-[4px] lg:py-[6px] xl:py-[8px] text-[11px] lg:text-[12px] xl:text-[13px] font-medium w-full sm:w-auto"
+            className="h-[28px] lg:h-[32px] xl:h-[36px] rounded-[8px] flex items-center justify-center gap-[4px] lg:gap-[6px] xl:gap-[8px] px-[6px] lg:px-[10px] xl:px-[12px] py-[4px] lg:py-[6px] xl:py-[8px] text-[11px] lg:text-[12px] xl:text-[13px] font-medium w-full sm:w-auto dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
             >
-              <span className="font-medium text-neutral-new900 truncate min-w-0">
+              <span className="font-medium text-neutral-new900 truncate min-w-0 dark:text-gray-200">
                 Select All
               </span>
             <div 
               className={`w-[12px] h-[12px] lg:w-[14px] lg:h-[14px] xl:w-[16px] xl:h-[16px] border-2 rounded-[3px] flex items-center justify-center transition-colors ${
                 selectAll 
                   ? 'bg-blue-600 border-[#2463eb]' 
-                  : 'bg-white border-gray-300'
+                  : 'bg-white border-gray-300 dark:bg-gray-700 dark:border-gray-500'
               }`}
             >
               {selectAll && (
@@ -253,15 +253,15 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
       </header>
 
       <div className="w-full flex-shrink-0 mb-[15px]">
-        <Separator className="w-full h-px bg-[#f1f4f9]" />
+        <Separator className="w-full h-px bg-[#f1f4f9] dark:bg-gray-600" />
       </div>
 
       {/* Dynamic Creator content - Cards or List */}
       <div className="flex-1 overflow-y-auto w-full">
         {totalCreators === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="text-gray-500 text-lg font-medium mb-2">No creators found</div>
-            <div className="text-gray-400 text-sm">Try adjusting your filters to see more results</div>
+            <div className="text-gray-500 text-lg font-medium mb-2 dark:text-gray-400">No creators found</div>
+            <div className="text-gray-400 text-sm dark:text-gray-500">Try adjusting your filters to see more results</div>
           </div>
         ) : viewMode === 'cards' ? (
           <CreatorGridView

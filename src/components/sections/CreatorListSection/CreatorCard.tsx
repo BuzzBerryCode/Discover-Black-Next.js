@@ -26,9 +26,9 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
   <Card
     onClick={onClick}
     className={`w-full rounded-[18px] p-0 border transition-all cursor-pointer ${
-      selected ? 'border-[#94c4fc]' : 'border-[#F1F4F9]'
+      selected ? 'border-[#94c4fc]' : 'border-[#F1F4F9] dark:border-gray-600'
     } ${
-      selectedCreator?.id === creator.id ? 'bg-[#f1f6fe]' : 'bg-white'
+      selectedCreator?.id === creator.id ? 'bg-[#f1f6fe] dark:bg-blue-900/20' : 'bg-white dark:bg-gray-800'
     } shadow-sm hover:shadow-md`}
   >
     <CardContent className="flex flex-col gap-3 p-4">
@@ -47,11 +47,11 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
             )}
           </div>
           <div className="flex flex-col min-w-0 flex-1">
-            <span className="font-semibold text-[#06152b] text-[15px] leading-[18px] truncate max-w-[calc(100%-8px)]">
+            <span className="font-semibold text-[#06152b] text-[15px] leading-[18px] truncate max-w-[calc(100%-8px)] dark:text-gray-100">
               {creator.username}
             </span>
             <div className="flex items-center gap-1 min-w-0">
-              <span className="text-[#71737c] text-[12px] font-medium truncate max-w-[calc(100%-20px)]">{creator.username_tag}</span>
+              <span className="text-[#71737c] text-[12px] font-medium truncate max-w-[calc(100%-20px)] dark:text-gray-400">{creator.username_tag}</span>
               {creator.social_media.map((social, iconIndex) => (
                 <Icon
                   key={iconIndex}
@@ -73,19 +73,19 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
             checked={selected}
             onCheckedChange={onCheckboxChange}
             onClick={(e) => e.stopPropagation()}
-            className="w-[18px] h-[18px] p-0 border-2 border-gray-300 rounded-[3px] data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600"
+            className="w-[18px] h-[18px] p-0 border-2 border-gray-300 rounded-[3px] data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 dark:border-gray-500"
             id={`select-${creator.id}`}
           />
         </div>
       </div>
       {/* Bio */}
-      <div className="text-[#71737c] text-[12px] font-medium leading-[16px] mb-1 line-clamp-2 min-h-[32px]">{creator.bio}</div>
+      <div className="text-[#71737c] text-[12px] font-medium leading-[16px] mb-1 line-clamp-2 min-h-[32px] dark:text-gray-400">{creator.bio}</div>
       {/* Metrics Section */}
       <div className="flex items-center justify-between gap-2 w-full mb-2">
         {/* Followers */}
-        <div className="flex flex-col items-center flex-1 bg-[#F9FAFB] rounded-lg p-2">
+        <div className="flex flex-col items-center flex-1 bg-[#F9FAFB] rounded-lg p-2 dark:bg-gray-700">
           <Icon name="FollowerIcon.svg" className="w-[20px] h-[20px] mb-1" alt="Followers icon" />
-          <span className="font-semibold text-[#06152b] text-[13px] leading-[16px]">{formatNumber(creator.followers)}</span>
+          <span className="font-semibold text-[#06152b] text-[13px] leading-[16px] dark:text-gray-100">{formatNumber(creator.followers)}</span>
           <span className={`flex items-center text-[10px] font-medium mt-0.5 ${(creator.followers_change ?? 0) === 0 ? 'text-gray-400' : (creator.followers_change ?? 0) > 0 ? 'text-green-600' : 'text-red-600'}`}> 
             {(creator.followers_change ?? 0) === 0 ? (
               <span className="mr-0.5">-</span>
@@ -96,9 +96,9 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
           </span>
         </div>
         {/* Avg Views */}
-        <div className="flex flex-col items-center flex-1 bg-[#F9FAFB] rounded-lg p-2">
+        <div className="flex flex-col items-center flex-1 bg-[#F9FAFB] rounded-lg p-2 dark:bg-gray-700">
           <Icon name="AvgViewsIcon.svg" className="w-[20px] h-[20px] mb-1" alt="Views icon" />
-          <span className="font-semibold text-[#06152b] text-[13px] leading-[16px]">{formatNumber(creator.avg_views)}</span>
+          <span className="font-semibold text-[#06152b] text-[13px] leading-[16px] dark:text-gray-100">{formatNumber(creator.avg_views)}</span>
           <span className={`flex items-center text-[10px] font-medium mt-0.5 ${(creator.avg_views_change ?? 0) === 0 ? 'text-gray-400' : (creator.avg_views_change ?? 0) > 0 ? 'text-green-600' : 'text-red-600'}`}> 
             {(creator.avg_views_change ?? 0) === 0 ? (
               <span className="mr-0.5">-</span>
@@ -109,9 +109,9 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
           </span>
         </div>
         {/* Engagement */}
-        <div className="flex flex-col items-center flex-1 bg-[#F9FAFB] rounded-lg p-2">
+        <div className="flex flex-col items-center flex-1 bg-[#F9FAFB] rounded-lg p-2 dark:bg-gray-700">
           <Icon name="AvgEngagementIcon.svg" className="w-[20px] h-[20px] mb-1" alt="Engage icon" />
-          <span className="font-semibold text-[#06152b] text-[13px] leading-[16px]">{creator.engagement.toFixed(2)}%</span>
+          <span className="font-semibold text-[#06152b] text-[13px] leading-[16px] dark:text-gray-100">{creator.engagement.toFixed(2)}%</span>
           <span className={`flex items-center text-[10px] font-medium mt-0.5 ${(creator.engagement_change ?? 0) === 0 ? 'text-gray-400' : (creator.engagement_change ?? 0) > 0 ? 'text-green-600' : 'text-red-600'}`}> 
             {(creator.engagement_change ?? 0) === 0 ? (
               <span className="mr-0.5">-</span>
@@ -123,7 +123,7 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
         </div>
       </div>
       {/* Buzz Score Bar */}
-      <div className="w-full h-[14px] bg-[#F1F4F9] rounded-[6px] relative overflow-hidden mb-2">
+      <div className="w-full h-[14px] bg-[#F1F4F9] rounded-[6px] relative overflow-hidden mb-2 dark:bg-gray-600">
         <div
           className="h-full rounded-[6px] bg-gradient-to-r from-[#FC4C4B] via-[#CD45BA] to-[#6E57FF]"
           style={{ width: `${creator.buzz_score}%` }}
@@ -146,8 +146,8 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
             variant="outline"
             className={`px-2 py-1 rounded-[6px] ${
               niche.type === "primary"
-                ? "bg-sky-50 border-[#dbe2eb] text-neutral-new900"
-                : "bg-green-50 border-green-200 text-green-700"
+                ? "bg-sky-50 border-[#dbe2eb] text-neutral-new900 dark:bg-blue-900/20 dark:border-blue-700 dark:text-blue-400"
+                : "bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-700 dark:text-green-400"
             }`}
           >
             <span className="font-medium text-[11px]">{niche.name}</span>
@@ -162,7 +162,7 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
         ].slice(0, 3).map((thumbnail, thumbIndex) => (
           <div key={thumbIndex} className="flex-1">
             <img
-              className="w-full aspect-[9/16] object-cover rounded-[8px] border border-[#F1F4F9]"
+              className="w-full aspect-[9/16] object-cover rounded-[8px] border border-[#F1F4F9] dark:border-gray-600"
               alt={`${creator.username} post ${thumbIndex + 1}`}
               src={thumbnail}
             />
