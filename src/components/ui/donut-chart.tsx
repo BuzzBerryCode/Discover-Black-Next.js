@@ -34,6 +34,7 @@ export const DonutChart: React.FC<DonutChartProps> = ({
           stroke="#E5E7EB"
           strokeWidth={strokeWidth}
           fill="transparent"
+          className="dark:stroke-gray-600"
         />
         
         {/* Progress circle with gradient */}
@@ -61,7 +62,7 @@ export const DonutChart: React.FC<DonutChartProps> = ({
       
       {/* Score text - keeping original font sizes */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-[8px] sm:text-[9px] lg:text-[10px] xl:text-[11px] font-bold fill-current">
+        <span className="text-[8px] sm:text-[9px] lg:text-[10px] xl:text-[11px] font-bold fill-current text-gray-900 dark:text-gray-100">
           {score}%
         </span>
       </div>

@@ -3,7 +3,7 @@ import { Icon } from './icon';
 import { Badge } from './badge';
 import { Button } from './button';
 import { Creator } from '../../types/database';
-import { formatNumber, getSocialMediaIcon } from '../../utils/formatters';
+import { formatNumber, getSocialMediaIcon, getMatchScoreColor } from '../../utils/formatters';
 
 interface ExpandedProfileOverlayProps {
   creator: Creator;
@@ -202,19 +202,30 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
           {/* Match Score and Close Button */}
           <div className="flex items-center gap-[6px] md:gap-[8px] lg:gap-[10px] flex-shrink-0">
             {currentMode === 'ai' && (
-              <div className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-[8px] md:px-[12px] lg:px-[16px] py-[4px] md:py-[6px] lg:py-[8px] rounded-[12px] md:rounded-[16px] font-bold text-[11px] md:text-[13px] lg:text-[15px] shadow-sm border border-green-200 dark:bg-green-900/20 dark:border-green-700 dark:text-green-400">
+              <div className={`px-[8px] md:px-[12px] lg:px-[16px] py-[4px] md:py-[6px] lg:py-[8px] rounded-[12px] md:rounded-[16px] font-bold text-[11px] md:text-[13px] lg:text-[15px] shadow-sm border ${getMatchScoreColor(creator.match_score || 0)}`}>
                 Match {creator.match_score || 0}%
               </div>
             )}
             <button
               onClick={onClose}
-              className="bg-transparent hover:bg-transparent transition-colors cursor-pointer"
+              className="bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer p-1 rounded-full"
             >
-              <Icon
-                name="CloseIcon.svg"
-                className="w-[13px] h-[13px] md:w-[15px] md:h-[15px] lg:w-[17px] lg:h-[17px] text-gray-600 dark:text-gray-400"
-                alt="Close"
-              />
+              <svg 
+                width="17" 
+                height="17" 
+                viewBox="0 0 16 16" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-gray-400 dark:text-white"
+              >
+                <path 
+                  d="M12 4L4 12M4 4L12 12" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
           </div>
         </div>
@@ -321,7 +332,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
             </div>
 
             {/* Engagement */}
-            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px]">
+            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px] dark:bg-gray-800">
               <div className="flex items-center justify-center">
                 <Icon
                   name="AvgEngagementIcon.svg"
@@ -330,10 +341,10 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                 />
               </div>
               <div className="text-center">
-                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1">
+                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1 dark:text-gray-100">
                   {creator.engagement.toFixed(1)}%
                 </div>
-                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1">
+                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1 dark:text-gray-400">
                   Engagement
                 </div>
                 <div className="flex items-center justify-center gap-[2px] md:gap-1">
@@ -348,7 +359,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
             </div>
 
             {/* Avg. Likes */}
-            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px]">
+            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px] dark:bg-gray-800">
               <div className="flex items-center justify-center">
                 <Icon
                   name="AvgLikesIcon.svg"
@@ -357,10 +368,10 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                 />
               </div>
               <div className="text-center">
-                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1">
+                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1 dark:text-gray-100">
                   {(creator.avg_likes || 0).toLocaleString()}
                 </div>
-                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1">
+                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1 dark:text-gray-400">
                   Avg. Likes
                 </div>
                 <div className="flex items-center justify-center gap-[2px] md:gap-1">
@@ -375,7 +386,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
             </div>
 
             {/* Avg. Comments */}
-            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px]">
+            <div className="bg-white rounded-[8px] md:rounded-[12px] px-[3px] md:px-[6px] py-[6px] md:py-[10px] flex flex-col items-center gap-[4px] md:gap-[8px] lg:gap-[10px] xl:gap-[12px] dark:bg-gray-800">
               <div className="flex items-center justify-center">
                 <Icon
                   name="AvgCommentsIcon.svg"
@@ -384,10 +395,10 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                 />
               </div>
               <div className="text-center">
-                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1">
+                <div className="text-[#06152b] text-[9px] md:text-[13px] lg:text-[15px] font-bold mb-1 dark:text-gray-100">
                   {(creator.avg_comments || 0).toLocaleString()}
                 </div>
-                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1">
+                <div className="text-[#71737c] text-[8px] md:text-[10px] lg:text-[13px] font-medium mb-1 dark:text-gray-400">
                   Avg. Comments
                 </div>
                 <div className="flex items-center justify-center gap-[2px] md:gap-1">
@@ -408,7 +419,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
           <div className="bg-white rounded-[8px] md:rounded-[12px] px-[12px] md:px-[20px] lg:px-[24px] pt-[10px] md:pt-[13px] lg:pt-[12px] pb-[12px] md:pb-[20px] lg:pb-[24px] dark:bg-gray-800">
             <div className="flex items-center justify-between mb-[8px] md:mb-[12px] lg:mb-[15px]">
               <div className="flex items-center gap-[7px] lg:gap-[10px]">
-                <span className="text-[#00518B] text-[12px] md:text-[15px] lg:text-[17px] font-bold">
+                <span className="text-white text-[12px] md:text-[15px] lg:text-[17px] font-bold">
                   Buzz Score
                 </span>
                 <span 
@@ -426,11 +437,11 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
               <div className="relative">
                 <button
                   onClick={() => setShowBuzzScoreInfo(!showBuzzScoreInfo)}
-                  className="bg-transparent hover:bg-gray-100 p-1 rounded-full transition-colors"
+                  className="bg-transparent hover:bg-gray-100 p-1 rounded-full transition-colors dark:hover:bg-gray-700"
                 >
                 <Icon
                   name="InformationIcon.svg"
-                  className="w-[10px] h-[10px] md:w-[12px] md:h-[12px] lg:w-[14px] lg:h-[14px] text-gray-600"
+                  className="w-[10px] h-[10px] md:w-[12px] md:h-[12px] lg:w-[14px] lg:h-[14px] text-gray-600 dark:text-gray-400"
                   alt="Info"
                 />
                 </button>
@@ -443,8 +454,8 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                   >
                     <div className="flex items-start gap-3">
                       <div>
-                        <h3 className="font-semibold text-gray-900 mb-2 text-sm">Buzz Score</h3>
-                        <p className="text-sm text-gray-600">
+                        <h3 className="font-semibold text-gray-900 mb-2 text-sm dark:text-gray-100">Buzz Score</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                           The Buzz Score is a performance metric that we calculate based on account growth, engagement, and consistency. It provides a comprehensive view of a creator's overall performance and trending potential.
                         </p>
                       </div>
@@ -482,7 +493,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
 
         {/* Latest Posts */}
         <div className="px-[16px] md:px-[19px] mb-[12px] md:mb-[17px]">
-          <h3 className="text-[#06152b] text-[12px] md:text-[16px] lg:text-[16px] font-bold mb-[8px] md:mb-[12px] lg:mb-[15px] flex items-center gap-2">
+          <h3 className="text-[#06152b] text-[12px] md:text-[16px] lg:text-[16px] font-bold mb-[8px] md:mb-[12px] lg:mb-[15px] flex items-center gap-2 dark:text-gray-100">
             <div className="w-1 h-4 bg-gradient-to-b from-[#557EDD] to-[#6C40E4] rounded-full"></div>
             Latest Posts
           </h3>
@@ -506,7 +517,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
                 const clickUrl = isTikTok && shareUrl ? shareUrl : profileUrl;
                 
                 return (
-                  <div key={index} className="aspect-[9/16] rounded-[6px] md:rounded-[10px] lg:rounded-[12px] overflow-hidden border border-[#F1F4F9] group relative">
+                  <div key={index} className="aspect-[9/16] rounded-[6px] md:rounded-[10px] lg:rounded-[12px] overflow-hidden border border-[#F1F4F9] dark:border-gray-600 group relative">
                     {/* TikTok-style hover overlay */}
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 ease-in-out z-10" />
                     
@@ -540,7 +551,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
           {creator.hashtags && creator.hashtags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
               {creator.hashtags.map((hashtag, idx) => (
-                <span key={idx} className="text-xs text-[#557EDD] bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full px-3 py-1 font-medium border border-blue-100 shadow-sm">{hashtag}</span>
+                <span key={idx} className="text-xs text-purple-600 bg-gradient-to-r from-purple-200 to-pink-200 rounded-full px-3 py-1 font-medium border border-purple-300 shadow-sm !dark:bg-purple-800/40 !dark:border-purple-600 !dark:text-purple-200 dark:shadow-purple-500/20">{hashtag}</span>
               ))}
             </div>
           )}

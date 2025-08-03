@@ -129,12 +129,12 @@ export const BuzzScoreFilterDropdown: React.FC<BuzzScoreFilterDropdownProps> = (
   return (
     <div
       ref={dropdownRef}
-      className="bg-white border border-[#dbe2eb] rounded-[12px] shadow-lg overflow-hidden w-[280px] sm:w-[320px] lg:w-[360px] max-h-[90vh]"
+      className="bg-white border border-[#dbe2eb] rounded-[12px] shadow-lg overflow-hidden w-[280px] sm:w-[320px] lg:w-[360px] max-h-[90vh] dark:bg-gray-800 dark:border-gray-600"
     >
       <div className="p-3 sm:p-4">
         {/* Header */}
         <div className="mb-3 sm:mb-4">
-          <h3 className="font-semibold text-[14px] sm:text-[16px] text-neutral-new900">
+          <h3 className="font-semibold text-[14px] sm:text-[16px] text-neutral-new900 dark:text-gray-100">
             Filter by Buzz Score
           </h3>
         </div>
@@ -146,15 +146,15 @@ export const BuzzScoreFilterDropdown: React.FC<BuzzScoreFilterDropdownProps> = (
               key={option.value}
               className={`flex items-center justify-between p-2 sm:p-3 rounded-[8px] transition-colors cursor-pointer ${
                 selectedScores.has(option.value)
-                  ? 'bg-blue-100 hover:bg-blue-200'
-                  : 'hover:bg-gray-50'
+                  ? 'bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30'
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
               onClick={() => onScoreToggle(option.value)}
             >
               <span className={`text-[12px] sm:text-[14px] ${
                 selectedScores.has(option.value)
-                  ? 'text-blue-700 font-semibold'
-                  : 'text-neutral-new900 font-medium'
+                  ? 'text-blue-700 font-semibold dark:text-blue-400'
+                  : 'text-neutral-new900 font-medium dark:text-gray-200'
               }`}>
                 {option.label}
               </span>
@@ -164,12 +164,12 @@ export const BuzzScoreFilterDropdown: React.FC<BuzzScoreFilterDropdownProps> = (
       </div>
 
       {/* Footer with buttons */}
-      <div className="p-2 sm:p-3 border-t border-[#f3f4f6] flex justify-between items-center">
+      <div className="p-2 sm:p-3 border-t border-[#f3f4f6] flex justify-between items-center dark:border-gray-600">
         <Button
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="h-7 sm:h-8 px-2 sm:px-3 text-[11px] sm:text-[12px] font-medium text-[#6b7280] hover:text-[#374151] hover:bg-[#f9fafb]"
+          className="h-7 sm:h-8 px-2 sm:px-3 text-[11px] sm:text-[12px] font-medium text-[#6b7280] hover:text-[#374151] hover:bg-[#f9fafb] dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
         >
           Reset
         </Button>

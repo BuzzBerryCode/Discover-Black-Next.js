@@ -1392,21 +1392,16 @@ export default function DiscoverPage(): JSX.Element {
 
                       {/* Category */}
                       <div className="flex flex-col gap-1 min-w-0">
-                        {creator.niches.slice(0, 2).map((niche, index) => (
+                        {creator.niches.map((niche, index) => (
                           <div key={index} className="flex items-center">
                             <Badge
                               variant="outline"
-                              className="px-[6px] lg:px-[8px] xl:px-[10px] py-[3px] lg:py-[4px] xl:py-[5px] bg-sky-50 rounded-[6px] border-[#dbe2eb] text-xs lg:text-[13px] xl:text-[13px]"
+                              className="px-[6px] lg:px-[8px] xl:px-[10px] py-[3px] lg:py-[4px] xl:py-[5px] bg-sky-50 rounded-[6px] border-[#dbe2eb] text-xs lg:text-[13px] xl:text-[13px] dark:bg-blue-900/20 dark:border-blue-700 dark:text-blue-400"
                             >
-                              <span className="font-medium text-neutral-new900 truncate">
+                              <span className="font-medium text-neutral-new900 truncate dark:text-gray-100">
                                 {niche}
                               </span>
                             </Badge>
-                            {index === 1 && creator.niches.length > 2 && (
-                              <span className="text-gray-500 ml-1 text-xs lg:text-[13px] xl:text-[13px]">
-                                +{creator.niches.length - 2}
-                              </span>
-                            )}
                           </div>
                         ))}
                       </div>

@@ -110,7 +110,7 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
         <div className="w-full h-[100px] bg-gray-100 rounded-lg animate-pulse mb-4 dark:bg-gray-700" />
         <div className="flex-1 overflow-y-auto w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-[12px] lg:gap-[15px] xl:gap-[18px] 2xl:gap-[20px] w-full pb-4">
-            {Array(6).fill(0).map((_, index) => (
+            {Array(12).fill(0).map((_, index) => (
               <Card key={index} className="w-full rounded-[15px] p-0 border-2 shadow-sm animate-pulse">
                 <CardContent className="flex flex-col gap-[8px] lg:gap-[10px] xl:gap-[12px] p-[12px] lg:p-[15px] xl:p-[18px]">
                   <div className="flex w-full items-start justify-between">

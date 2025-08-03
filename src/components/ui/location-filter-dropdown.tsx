@@ -130,12 +130,12 @@ export const LocationFilterDropdown: React.FC<LocationFilterDropdownProps> = ({
   return (
     <div
       ref={dropdownRef}
-      className="w-[280px] sm:w-[320px] lg:w-[360px] bg-white border border-[#e5e7eb] rounded-[12px] shadow-lg overflow-hidden max-h-[90vh]"
+      className="w-[280px] sm:w-[320px] lg:w-[360px] bg-white border border-[#e5e7eb] rounded-[12px] shadow-lg overflow-hidden max-h-[90vh] dark:bg-gray-800 dark:border-gray-600"
     >
       <div className="p-3 sm:p-4">
         {/* Header */}
         <div className="mb-3 sm:mb-4">
-          <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#111827]">
+          <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#111827] dark:text-gray-100">
             Filter by Region
           </h3>
         </div>
@@ -148,15 +148,15 @@ export const LocationFilterDropdown: React.FC<LocationFilterDropdownProps> = ({
                 key={region}
                 className={`flex items-center space-x-2 sm:space-x-3 p-2 rounded-[6px] cursor-pointer transition-colors ${
                   selectedLocations.has(region)
-                    ? 'bg-blue-100 hover:bg-blue-200'
-                    : 'hover:bg-gray-50'
+                    ? 'bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/20 dark:hover:bg-blue-900/30'
+                    : 'hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
                 onClick={() => onLocationToggle(region)}
               >
                 <span className={`text-[12px] sm:text-[14px] cursor-pointer flex-1 ${
                   selectedLocations.has(region)
-                    ? 'text-blue-700 font-medium'
-                    : 'text-[#111827]'
+                    ? 'text-blue-700 font-medium dark:text-blue-400'
+                    : 'text-[#111827] dark:text-gray-200'
                 }`}>
                   {region}
                 </span>
@@ -167,12 +167,12 @@ export const LocationFilterDropdown: React.FC<LocationFilterDropdownProps> = ({
       </div>
 
       {/* Footer with buttons */}
-      <div className="p-2 sm:p-3 border-t border-[#f3f4f6] flex justify-between items-center">
+      <div className="p-2 sm:p-3 border-t border-[#f3f4f6] flex justify-between items-center dark:border-gray-600">
         <Button
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="h-7 sm:h-8 px-2 sm:px-3 text-[11px] sm:text-[12px] font-medium text-[#6b7280] hover:text-[#374151] hover:bg-[#f9fafb]"
+          className="h-7 sm:h-8 px-2 sm:px-3 text-[11px] sm:text-[12px] font-medium text-[#6b7280] hover:text-[#374151] hover:bg-[#f9fafb] dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
         >
           Reset
         </Button>

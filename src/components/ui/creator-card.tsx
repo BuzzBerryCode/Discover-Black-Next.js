@@ -115,14 +115,14 @@ export const CreatorCard: React.FC<CreatorCardProps> = ({
 
         {/* Category Badges */}
         <div className="flex items-center gap-[4px] lg:gap-[6px] xl:gap-[8px] mb-[8px] lg:mb-[10px] xl:mb-[12px] flex-wrap">
-          {creator.niches.slice(0, 2).map((niche, index) => (
+          {creator.niches.map((niche, index) => (
             <Badge
               key={index}
               variant="outline"
               className={`px-[6px] lg:px-[8px] xl:px-[10px] py-[2px] lg:py-[3px] xl:py-[4px] rounded-[6px] lg:rounded-[7px] xl:rounded-[8px] flex-shrink-0 ${
                 niche.type === 'primary' 
-                  ? 'bg-sky-50 border-[#dbe2eb] text-neutral-new900' 
-                  : 'bg-green-50 border-green-200 text-green-700'
+                  ? 'bg-sky-50 border-[#dbe2eb] text-neutral-new900 dark:bg-blue-900/20 dark:border-blue-700 dark:text-blue-400' 
+                  : 'bg-green-50 border-green-200 text-green-700 dark:bg-green-900/20 dark:border-green-700 dark:text-green-400'
               }`}
             >
               <span className="font-medium text-[10px] lg:text-[11px] xl:text-[12px] leading-[12px] lg:leading-[14px] xl:leading-[16px]">
@@ -130,16 +130,6 @@ export const CreatorCard: React.FC<CreatorCardProps> = ({
               </span>
             </Badge>
           ))}
-          {creator.niches.length > 2 && (
-            <Badge
-              variant="outline"
-              className="px-[6px] lg:px-[8px] xl:px-[10px] py-[2px] lg:py-[3px] xl:py-[4px] bg-gray-100 border-gray-300 text-gray-600 rounded-[6px] lg:rounded-[7px] xl:rounded-[8px] flex-shrink-0"
-            >
-              <span className="font-medium text-[10px] lg:text-[11px] xl:text-[12px] leading-[12px] lg:leading-[14px] xl:leading-[16px]">
-                +{creator.niches.length - 2}
-              </span>
-            </Badge>
-          )}
         </div>
 
         {/* Metrics Row */}

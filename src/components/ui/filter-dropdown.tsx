@@ -145,7 +145,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
 
   // Close on outside click
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: Event) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node) &&
@@ -172,19 +172,19 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
   return (
     <div
       ref={dropdownRef}
-      className="w-[280px] sm:w-[320px] lg:w-[360px] bg-white border border-[#e5e7eb] rounded-[12px] shadow-lg overflow-hidden max-h-[90vh]"
+      className="w-[280px] sm:w-[320px] lg:w-[360px] bg-white border border-[#e5e7eb] rounded-[12px] shadow-lg overflow-hidden max-h-[90vh] dark:bg-gray-800 dark:border-gray-600"
     >
       <div className="p-3 sm:p-4">
         {/* Header */}
         <div className="mb-3 sm:mb-4">
-          <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#111827] mb-1">
+          <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#111827] mb-1 dark:text-gray-100">
             {config.title}
           </h3>
         </div>
 
         {/* Min Input */}
         <div className="mb-3 sm:mb-4">
-          <label className="block text-[12px] sm:text-[14px] font-medium text-[#374151] mb-2">
+          <label className="block text-[12px] sm:text-[14px] font-medium text-[#374151] mb-2 dark:text-gray-300">
             Min {config.unit}
           </label>
           <input
@@ -192,14 +192,14 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
             value={minInput}
             onChange={handleMinInputChange}
             onBlur={handleMinInputBlur}
-            className="w-full h-[36px] sm:h-[40px] px-3 py-2 border border-[#d1d5db] rounded-[8px] text-[12px] sm:text-[14px] text-[#111827] bg-[#f9fafb] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent"
+            className="w-full h-[36px] sm:h-[40px] px-3 py-2 border border-[#d1d5db] rounded-[8px] text-[12px] sm:text-[14px] text-[#111827] bg-[#f9fafb] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"
             placeholder={config.min.toString()}
           />
         </div>
 
         {/* Max Input */}
         <div className="mb-4 sm:mb-6">
-          <label className="block text-[12px] sm:text-[14px] font-medium text-[#374151] mb-2">
+          <label className="block text-[12px] sm:text-[14px] font-medium text-[#374151] mb-2 dark:text-gray-300">
             Max {config.unit}
           </label>
           <input
@@ -207,7 +207,7 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
             value={maxInput}
             onChange={handleMaxInputChange}
             onBlur={handleMaxInputBlur}
-            className="w-full h-[36px] sm:h-[40px] px-3 py-2 border border-[#d1d5db] rounded-[8px] text-[12px] sm:text-[14px] text-[#111827] bg-[#f9fafb] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent"
+            className="w-full h-[36px] sm:h-[40px] px-3 py-2 border border-[#d1d5db] rounded-[8px] text-[12px] sm:text-[14px] text-[#111827] bg-[#f9fafb] focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"
             placeholder={config.max.toString()}
           />
         </div>
@@ -226,12 +226,12 @@ export const FilterDropdown: React.FC<FilterDropdownProps> = ({
       </div>
 
       {/* Footer with buttons */}
-      <div className="p-2 sm:p-3 border-t border-[#f3f4f6] flex justify-between items-center">
+      <div className="p-2 sm:p-3 border-t border-[#f3f4f6] flex justify-between items-center dark:border-gray-600">
         <Button
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="h-7 sm:h-8 px-2 sm:px-3 text-[11px] sm:text-[12px] font-medium text-[#6b7280] hover:text-[#374151] hover:bg-[#f9fafb]"
+          className="h-7 sm:h-8 px-2 sm:px-3 text-[11px] sm:text-[12px] font-medium text-[#6b7280] hover:text-[#374151] hover:bg-[#f9fafb] dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700"
         >
           Reset
         </Button>

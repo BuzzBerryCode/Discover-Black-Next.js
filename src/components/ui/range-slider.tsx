@@ -97,7 +97,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
       <div className="relative mb-6">
         <div
           ref={trackRef}
-          className="relative h-2 bg-gray-200 rounded-full cursor-pointer"
+          className="relative h-2 bg-gray-200 rounded-full cursor-pointer dark:bg-gray-600"
           onClick={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
             const percentage = ((e.clientX - rect.left) / rect.width) * 100;
@@ -125,7 +125,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
           
           {/* Min handle */}
           <div
-            className="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2 hover:scale-110 transition-transform shadow-sm"
+            className="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2 hover:scale-110 transition-transform shadow-sm dark:bg-gray-800 dark:border-blue-400"
             style={{ left: `${minPercentage}%` }}
             onMouseDown={() => setIsDragging('min')}
             onTouchStart={() => setIsDragging('min')}
@@ -133,7 +133,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
           
           {/* Max handle */}
           <div
-            className="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2 hover:scale-110 transition-transform shadow-sm"
+            className="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full cursor-grab active:cursor-grabbing transform -translate-x-1/2 -translate-y-1/2 top-1/2 hover:scale-110 transition-transform shadow-sm dark:bg-gray-800 dark:border-blue-400"
             style={{ left: `${maxPercentage}%` }}
             onMouseDown={() => setIsDragging('max')}
             onTouchStart={() => setIsDragging('max')}
@@ -142,7 +142,7 @@ export const RangeSlider: React.FC<RangeSliderProps> = ({
       </div>
 
       {/* Value labels */}
-      <div className="flex justify-between text-[12px] text-gray-600 font-['Inter',Helvetica]">
+      <div className="flex justify-between text-[12px] text-gray-600 font-['Inter',Helvetica] dark:text-gray-400">
         <span>{formatValue(min)}</span>
         <span>{formatValue(Math.round((min + max) / 2))}</span>
         <span>{formatValue(max)}</span>

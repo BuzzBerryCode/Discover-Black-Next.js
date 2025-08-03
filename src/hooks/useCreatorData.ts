@@ -117,7 +117,7 @@ const transformCreatorData = async (dbCreator: any): Promise<Creator> => {
           try {
             post = JSON.parse(post);
           } catch (e) {
-            console.warn(`Failed to parse post ${i} for ${dbCreator.handle}:`, e);
+            // Failed to parse post - skip this post
             continue;
           }
         }
@@ -218,7 +218,7 @@ const transformCreatorData = async (dbCreator: any): Promise<Creator> => {
         parsedLocation = parseLocationManually(rawLocation);
       }
     } catch (locationError) {
-      console.warn('Location parsing failed for creator:', dbCreator.id, locationError);
+      // Location parsing failed - use fallback
       parsedLocation = { city: null, country: 'Global', region: 'Global', isGlobal: true, rawLocation: rawLocation || '' };
     }
     
@@ -259,8 +259,7 @@ const transformCreatorData = async (dbCreator: any): Promise<Creator> => {
     updated_at: dbCreator.created_at || new Date().toISOString()
   };
   } catch (error) {
-    console.error('Error transforming creator data:', error, dbCreator);
-    // Return a fallback creator object to prevent crashes
+    // Error transforming creator data - return fallback object
     return {
       id: dbCreator.id || 'unknown',
       profile_pic: dbCreator.profile_image_url || '',
@@ -304,32 +303,24 @@ const transformCreatorData = async (dbCreator: any): Promise<Creator> => {
 
 // Fetch metrics for all creators (count, avg followers, avg views, avg engagement)
 const fetchCreatorMetrics = async (filters: DatabaseFilters = {}, setTotalCount?: (count: number) => void) => {
-  // console.log('fetchCreatorMetrics called with filters:', filters);
   let query = supabase
     .from('creatordata')
-    .select('id, followers_count, average_views, engagement_rate', { count: 'exact', head: false });
+    .select('*', { count: 'exact' });
 
-  // Optionally apply filters here if needed
-  // (You can add filter logic similar to applyFilters if you want metrics to reflect filters)
-
-  // Apply filters (same logic as above)
   if (filters.niches?.length) {
-    // console.log('Filtering by niches:', filters.niches);
-    // Only filter by primary_niche
     query = query.in('primary_niche', filters.niches);
   }
-        if (filters.platforms?.length) {
-        // Handle case-insensitive platform matching
-        const platformConditions = filters.platforms.map(platform => {
-          const lowerPlatform = platform.toLowerCase();
-          if (lowerPlatform === 'instagram') return 'platform.ilike.instagram';
-          if (lowerPlatform === 'tiktok') return 'platform.ilike.tiktok';
-          if (lowerPlatform === 'youtube') return 'platform.ilike.youtube';
-          if (lowerPlatform === 'x' || lowerPlatform === 'twitter') return 'platform.ilike.twitter';
-          return `platform.ilike.${platform}`;
-        });
-        query = query.or(platformConditions.join(','));
-      }
+  if (filters.platforms?.length) {
+    const platformConditions = filters.platforms.map(platform => {
+      const lowerPlatform = platform.toLowerCase();
+      if (lowerPlatform === 'instagram') return 'platform.ilike.instagram';
+      if (lowerPlatform === 'tiktok') return 'platform.ilike.tiktok';
+      if (lowerPlatform === 'youtube') return 'platform.ilike.youtube';
+      if (lowerPlatform === 'x' || lowerPlatform === 'twitter') return 'platform.ilike.twitter';
+      return `platform.ilike.${platform}`;
+    });
+    query = query.or(platformConditions.join(','));
+  }
   if (filters.followers_min !== undefined) {
     query = query.gte('followers_count', filters.followers_min);
   }
@@ -340,7 +331,6 @@ const fetchCreatorMetrics = async (filters: DatabaseFilters = {}, setTotalCount?
     query = query.gte('engagement_rate', filters.engagement_min);
   }
   if (filters.engagement_max !== undefined) {
-    // If max is 500 (the maximum), don't apply upper limit to include everything above 500%
     if (filters.engagement_max < 500) {
       query = query.lte('engagement_rate', filters.engagement_max);
     }
@@ -349,31 +339,23 @@ const fetchCreatorMetrics = async (filters: DatabaseFilters = {}, setTotalCount?
     query = query.gte('average_views', filters.avg_views_min);
   }
   if (filters.avg_views_max !== undefined) {
-    // If max is 1000000 (the maximum), don't apply upper limit to include everything above 1M
     if (filters.avg_views_max < 1000000) {
       query = query.lte('average_views', filters.avg_views_max);
     }
   }
   if (filters.buzz_scores?.length) {
-    // Simplified buzz score filtering - since all scores are currently 0
     const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
     const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
     
     if (!hasLessThan60 && hasOtherRanges) {
-      // Only higher ranges selected - return no results efficiently
-      // Use a condition that will never match any existing records
       query = query.eq('buzz_score', 999999);
     }
-    // For all other cases (Less than 60% selected or both selected), no filtering needed
-    // since all current buzz scores are 0, which falls under "Less than 60%"
   }
   if (filters.locations?.length) {
-    // Filter by locationRegion column
-    query = query.in('locationRegion', filters.locations);
+    query = query.in('location', filters.locations);
   }
 
   const { data, count, error } = await query;
-  // console.log('fetchCreatorMetrics query result:', { data: data?.length, count, error });
   if (error) throw error;
 
   const total_creators = count || 0;
@@ -386,14 +368,13 @@ const fetchCreatorMetrics = async (filters: DatabaseFilters = {}, setTotalCount?
     avg_views = Math.round(data.reduce((sum, c) => sum + (c.average_views || 0), 0) / data.length);
     avg_engagement = Math.round((data.reduce((sum, c) => sum + (c.engagement_rate || 0), 0) / data.length) * 100) / 100;
   }
-  // In fetchCreatorMetrics, ensure change_type is typed correctly
   return {
     total_creators,
     avg_followers,
     avg_views,
     avg_engagement,
-    change_percentage: 0, // Not calculated here
-    change_type: 'positive' as const, // Not calculated here
+    change_percentage: 0,
+    change_type: 'positive' as const,
   };
 };
 
@@ -439,13 +420,13 @@ export const useCreatorData = () => {
     try {
       localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
     } catch (error) {
-      console.warn('Failed to save to localStorage:', error);
+      // Failed to save to localStorage - continue silently
     }
   };
 
   // Update pagination when filtered creators change
   const updatePagination = (creatorList: Creator[], page: number = 1) => {
-    const totalPages = Math.ceil(creatorList.length / CREATORS_PER_PAGE);
+    const totalPages = Math.max(1, Math.ceil(creatorList.length / CREATORS_PER_PAGE));
     const startIndex = (page - 1) * CREATORS_PER_PAGE;
     const endIndex = startIndex + CREATORS_PER_PAGE;
     const paginatedList = creatorList.slice(startIndex, endIndex);
@@ -460,9 +441,9 @@ export const useCreatorData = () => {
   const handlePageChange = (page: number) => {
     // If we have a sort state, use the sorting function, otherwise use regular pagination
     if (sortState.field) {
-      fetchCreatorsWithSorting(sortState.field, sortState.direction);
+      fetchCreatorsWithSorting(sortState.field, sortState.direction, page);
     } else {
-      fetchPaginatedCreators(page);
+      fetchPaginatedCreators(page, currentMode, currentFilters);
     }
   };
 
@@ -482,7 +463,6 @@ export const useCreatorData = () => {
 
   // Apply filters to creators using Supabase queries
   const applyFilters = async (filters: DatabaseFilters, mode: CreatorListMode = currentMode) => {
-    // Removed debug logging for security
     setCurrentFilters(filters);
     saveToLocalStorage('discover_currentFilters', filters);
     setLoading(true);
@@ -498,7 +478,6 @@ export const useCreatorData = () => {
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred while filtering creators');
-      // Removed debug logging for security
     } finally {
       setLoading(false);
     }
@@ -516,13 +495,13 @@ export const useCreatorData = () => {
   };
 
   // Fetch creators with server-side sorting
-  const fetchCreatorsWithSorting = async (sortField: SortField, sortDirection: 'asc' | 'desc') => {
+  const fetchCreatorsWithSorting = async (sortField: SortField, sortDirection: 'asc' | 'desc', page: number = currentPage) => {
     setLoading(true);
     setError(null);
     
     try {
-      const startIndex = 0;
-      const endIndex = CREATORS_PER_PAGE - 1;
+      const startIndex = (page - 1) * CREATORS_PER_PAGE;
+      const endIndex = startIndex + CREATORS_PER_PAGE - 1;
       
       // Map frontend field names to database column names
       const getDatabaseField = (field: SortField): string => {
@@ -542,10 +521,66 @@ export const useCreatorData = () => {
 
       const databaseField = getDatabaseField(sortField);
       
+      // First, get the total count of all matching records (without range)
+      let countQuery = supabase
+        .from('creatordata')
+        .select('*', { count: 'exact', head: true });
+      
+      // Apply the same filters to the count query
+      if (currentFilters.niches?.length) {
+        countQuery = countQuery.in('primary_niche', currentFilters.niches);
+      }
+      if (currentFilters.platforms?.length) {
+        const platformConditions = currentFilters.platforms.map(platform => {
+          const lowerPlatform = platform.toLowerCase();
+          if (lowerPlatform === 'instagram') return 'platform.ilike.instagram';
+          if (lowerPlatform === 'tiktok') return 'platform.ilike.tiktok';
+          if (lowerPlatform === 'youtube') return 'platform.ilike.youtube';
+          if (lowerPlatform === 'x' || lowerPlatform === 'twitter') return 'platform.ilike.twitter';
+          return `platform.ilike.${platform}`;
+        });
+        countQuery = countQuery.or(platformConditions.join(','));
+      }
+      if (currentFilters.followers_min !== undefined) {
+        countQuery = countQuery.gte('followers_count', currentFilters.followers_min);
+      }
+      if (currentFilters.followers_max !== undefined) {
+        countQuery = countQuery.lte('followers_count', currentFilters.followers_max);
+      }
+      if (currentFilters.engagement_min !== undefined) {
+        countQuery = countQuery.gte('engagement_rate', currentFilters.engagement_min);
+      }
+      if (currentFilters.engagement_max !== undefined) {
+        if (currentFilters.engagement_max < 500) {
+          countQuery = countQuery.lte('engagement_rate', currentFilters.engagement_max);
+        }
+      }
+      if (currentFilters.avg_views_min !== undefined) {
+        countQuery = countQuery.gte('average_views', currentFilters.avg_views_min);
+      }
+      if (currentFilters.avg_views_max !== undefined) {
+        if (currentFilters.avg_views_max < 1000000) {
+          countQuery = countQuery.lte('average_views', currentFilters.avg_views_max);
+        }
+      }
+      if (currentFilters.buzz_scores?.length) {
+        const hasLessThan60 = currentFilters.buzz_scores.includes('Less than 60%');
+        const hasOtherRanges = currentFilters.buzz_scores.some(range => range !== 'Less than 60%');
+        
+        if (!hasLessThan60 && hasOtherRanges) {
+          countQuery = countQuery.eq('buzz_score', 999999);
+        }
+      }
+      if (currentFilters.locations?.length) {
+        countQuery = countQuery.in('location', currentFilters.locations);
+      }
+      
+      const { count: totalCount } = await countQuery;
+      
       // Build query with server-side sorting
       let query = supabase
         .from('creatordata')
-        .select('*', { count: 'exact' })
+        .select('*')
         .order(databaseField, { ascending: sortDirection === 'asc' })
         .range(startIndex, endIndex);
       
@@ -574,7 +609,6 @@ export const useCreatorData = () => {
         query = query.gte('engagement_rate', currentFilters.engagement_min);
       }
       if (currentFilters.engagement_max !== undefined) {
-        // If max is 500 (the maximum), don't apply upper limit to include everything above 500%
         if (currentFilters.engagement_max < 500) {
           query = query.lte('engagement_rate', currentFilters.engagement_max);
         }
@@ -583,7 +617,6 @@ export const useCreatorData = () => {
         query = query.gte('average_views', currentFilters.avg_views_min);
       }
       if (currentFilters.avg_views_max !== undefined) {
-        // If max is 1000000 (the maximum), don't apply upper limit to include everything above 1M
         if (currentFilters.avg_views_max < 1000000) {
           query = query.lte('average_views', currentFilters.avg_views_max);
         }
@@ -597,10 +630,10 @@ export const useCreatorData = () => {
         }
       }
       if (currentFilters.locations?.length) {
-        query = query.in('locationRegion', currentFilters.locations);
+        query = query.in('location', currentFilters.locations);
       }
       
-      const { data, error: queryError, count } = await query;
+      const { data, error: queryError } = await query;
       if (queryError) throw queryError;
       
       // Transform creators
@@ -608,7 +641,7 @@ export const useCreatorData = () => {
       try {
         transformedCreators = await Promise.all((data || []).map(transformCreatorData));
       } catch (transformError) {
-        console.error('Error transforming creators:', transformError);
+        // Error transforming creators - return empty array to prevent crash
         transformedCreators = [];
       }
       
@@ -616,7 +649,7 @@ export const useCreatorData = () => {
       if (currentMode === 'ai') {
         transformedCreators = transformedCreators.map(creator => ({
           ...creator,
-          match_score: Math.floor(Math.random() * 40) + 60
+          match_score: Math.floor(Math.random() * 40) + 60 // Temporary: 60-100% match scores
         }));
         
         // For match score sorting in AI mode, sort client-side after generating scores
@@ -629,22 +662,25 @@ export const useCreatorData = () => {
             }
           });
         }
+        
+        setAiRecommendedCreators(transformedCreators);
+      } else {
+        setAllCreators(transformedCreators);
       }
       
-      // Update state with server-sorted data
       setCreators(transformedCreators);
       setFilteredCreators(transformedCreators);
-      setAllCreators(transformedCreators);
-      if (currentMode === 'ai') {
-        setAiRecommendedCreators(transformedCreators);
+      setPaginatedCreators(transformedCreators);
+      setCurrentPage(page);
+      saveToLocalStorage('discover_currentPage', page);
+      
+      // Set total pages based on the total count of all matching records
+      if (typeof totalCount === 'number') {
+        const totalPages = Math.max(1, Math.ceil(totalCount / CREATORS_PER_PAGE));
+        setTotalPages(totalPages);
       }
-      
-      // Apply pagination to sorted data (always start at page 1 when sorting)
-      updatePagination(transformedCreators, 1);
-      setTotalFilteredCount(count || transformedCreators.length);
-      
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to sort creators');
+      setError(err instanceof Error ? err.message : 'Failed to load creators');
     } finally {
       setLoading(false);
     }
@@ -715,7 +751,6 @@ export const useCreatorData = () => {
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load creators');
-      // Removed debug logging for security
     } finally {
       setLoading(false);
     }
@@ -749,19 +784,74 @@ export const useCreatorData = () => {
       const sortField = sortState.field ? getDatabaseField(sortState.field) : 'followers_count';
       const sortDirection = sortState.field ? sortState.direction === 'asc' : false;
       
+      // First, get the total count of all matching records (without range)
+      let countQuery = supabase
+        .from('creatordata')
+        .select('*', { count: 'exact', head: true });
+      
+      // Apply the same filters to the count query
+      if (filters.niches?.length) {
+        countQuery = countQuery.in('primary_niche', filters.niches);
+      }
+      if (filters.platforms?.length) {
+        const platformConditions = filters.platforms.map(platform => {
+          const lowerPlatform = platform.toLowerCase();
+          if (lowerPlatform === 'instagram') return 'platform.ilike.instagram';
+          if (lowerPlatform === 'tiktok') return 'platform.ilike.tiktok';
+          if (lowerPlatform === 'youtube') return 'platform.ilike.youtube';
+          if (lowerPlatform === 'x' || lowerPlatform === 'twitter') return 'platform.ilike.twitter';
+          return `platform.ilike.${platform}`;
+        });
+        countQuery = countQuery.or(platformConditions.join(','));
+      }
+      if (filters.followers_min !== undefined) {
+        countQuery = countQuery.gte('followers_count', filters.followers_min);
+      }
+      if (filters.followers_max !== undefined) {
+        countQuery = countQuery.lte('followers_count', filters.followers_max);
+      }
+      if (filters.engagement_min !== undefined) {
+        countQuery = countQuery.gte('engagement_rate', filters.engagement_min);
+      }
+      if (filters.engagement_max !== undefined) {
+        if (filters.engagement_max < 500) {
+          countQuery = countQuery.lte('engagement_rate', filters.engagement_max);
+        }
+      }
+      if (filters.avg_views_min !== undefined) {
+        countQuery = countQuery.gte('average_views', filters.avg_views_min);
+      }
+      if (filters.avg_views_max !== undefined) {
+        if (filters.avg_views_max < 1000000) {
+          countQuery = countQuery.lte('average_views', filters.avg_views_max);
+        }
+      }
+      if (filters.buzz_scores?.length) {
+        const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
+        const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
+        
+        if (!hasLessThan60 && hasOtherRanges) {
+          countQuery = countQuery.eq('buzz_score', 999999);
+        }
+      }
+      if (filters.locations?.length) {
+        countQuery = countQuery.in('location', filters.locations);
+      }
+      
+      const { count: totalCount } = await countQuery;
+      
+      // Now get the paginated data
       let query = supabase
         .from('creatordata')
-        .select('*', { count: 'exact' })
+        .select('*')
         .order(sortField, { ascending: sortDirection })
         .range(startIndex, endIndex);
       
-      // Apply filters (same logic as applyFilters)
+      // Apply the same filters to the data query
       if (filters.niches?.length) {
-        // Only filter by primary_niche
         query = query.in('primary_niche', filters.niches);
       }
       if (filters.platforms?.length) {
-        // Handle case-insensitive platform matching
         const platformConditions = filters.platforms.map(platform => {
           const lowerPlatform = platform.toLowerCase();
           if (lowerPlatform === 'instagram') return 'platform.ilike.instagram';
@@ -782,7 +872,6 @@ export const useCreatorData = () => {
         query = query.gte('engagement_rate', filters.engagement_min);
       }
       if (filters.engagement_max !== undefined) {
-        // If max is 500 (the maximum), don't apply upper limit to include everything above 500%
         if (filters.engagement_max < 500) {
           query = query.lte('engagement_rate', filters.engagement_max);
         }
@@ -791,30 +880,23 @@ export const useCreatorData = () => {
         query = query.gte('average_views', filters.avg_views_min);
       }
       if (filters.avg_views_max !== undefined) {
-        // If max is 1000000 (the maximum), don't apply upper limit to include everything above 1M
         if (filters.avg_views_max < 1000000) {
           query = query.lte('average_views', filters.avg_views_max);
         }
       }
       if (filters.buzz_scores?.length) {
-        // Simplified buzz score filtering - since all scores are currently 0
         const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
         const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
         
         if (!hasLessThan60 && hasOtherRanges) {
-          // Only higher ranges selected - return no results efficiently
-          // Use a condition that will never match any existing records
           query = query.eq('buzz_score', 999999);
         }
-        // For all other cases (Less than 60% selected or both selected), no filtering needed
-        // since all current buzz scores are 0, which falls under "Less than 60%"
       }
       if (filters.locations?.length) {
-        // Filter by locationRegion column
-        query = query.in('locationRegion', filters.locations);
+        query = query.in('location', filters.locations);
       }
       
-      const { data, error: queryError, count } = await query;
+      const { data, error: queryError } = await query;
       if (queryError) throw queryError;
       
       // Transform creators with error handling
@@ -822,8 +904,7 @@ export const useCreatorData = () => {
       try {
         transformedCreators = await Promise.all((data || []).map(transformCreatorData));
       } catch (transformError) {
-        console.error('Error transforming creators:', transformError);
-        // Return empty array to prevent crash
+        // Error transforming creators - return empty array to prevent crash
         transformedCreators = [];
       }
       
@@ -854,13 +935,14 @@ export const useCreatorData = () => {
       setPaginatedCreators(transformedCreators);
       setCurrentPage(page);
       saveToLocalStorage('discover_currentPage', page);
-      // Set total pages based on count (if available)
-      if (typeof count === 'number') {
-        setTotalPages(Math.ceil(count / CREATORS_PER_PAGE));
+      
+      // Set total pages based on the total count of all matching records
+      if (typeof totalCount === 'number') {
+        const totalPages = Math.max(1, Math.ceil(totalCount / CREATORS_PER_PAGE));
+        setTotalPages(totalPages);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load creators');
-      // Removed debug logging for security
     } finally {
       setLoading(false);
     }
@@ -882,8 +964,6 @@ export const useCreatorData = () => {
         if (creator.primary_niche) nicheSet.add(creator.primary_niche);
       });
       
-      // Removed debug logging for security
-      
       // Convert to Niche objects
       const uniqueNiches: Niche[] = Array.from(nicheSet).map(name => ({
         id: name.toLowerCase().replace(/\s+/g, '-'),
@@ -894,7 +974,6 @@ export const useCreatorData = () => {
       setNiches(uniqueNiches);
       
     } catch (err) {
-      // Removed debug logging for security
       // Fallback to empty array
       setNiches([]);
     }
@@ -920,15 +999,6 @@ export const useCreatorData = () => {
     })();
     loadNiches();
   }, []);
-
-  // Debug what's being returned (only log when values change)
-  // console.log('useCreatorData returning:', {
-  //   creatorsCount: paginatedCreators.length,
-  //   totalCreators: totalFilteredCount,
-  //   metrics,
-  //   currentPage,
-  //   totalPages
-  // });
 
   return {
     creators: paginatedCreators, // Return paginated creators instead of all filtered creators

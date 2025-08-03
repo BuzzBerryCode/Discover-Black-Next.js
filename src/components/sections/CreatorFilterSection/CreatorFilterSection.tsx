@@ -137,10 +137,10 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
 
   // Helper function to get niche styling (all are primary niches now)
   const getNicheStyles = (nicheName: string, isSelected: boolean) => {
-    // All niches are primary niches (sky blue theme)
+    // Match the creator card niche styling with dark theme support and better selected state
     return isSelected
-      ? 'bg-blue-100 border-blue-300 text-blue-700 hover:bg-blue-200'
-      : 'bg-sky-50 border-[#dbe2eb] text-neutral-new900 hover:bg-sky-100';
+      ? 'bg-orange-100 border-orange-300 text-orange-700 hover:bg-orange-200 dark:bg-orange-900/20 dark:border-orange-700 dark:text-orange-400 dark:hover:bg-orange-900/30'
+      : 'bg-sky-50 border-[#dbe2eb] text-neutral-new900 hover:bg-sky-100 dark:bg-blue-900/20 dark:border-blue-700 dark:text-blue-400 dark:hover:bg-blue-900/30';
   };
   // Get ordered categories with selected ones first
   const getOrderedCategories = () => {
@@ -445,7 +445,77 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
     switchMode(mode);
   };
 
-  // Close dropdown when clicking outside
+  // Handle dropdown positioning
+  useEffect(() => {
+    if (isDropdownOpen && dropdownRef.current && viewAllButtonRef.current) {
+      const triggerRect = viewAllButtonRef.current.getBoundingClientRect();
+      const dropdown = dropdownRef.current;
+      const viewport = {
+        width: window.innerWidth,
+        height: window.innerHeight
+      };
+      
+      // Calculate optimal position
+      let top = triggerRect.bottom + 8;
+      let left = triggerRect.right - 320; // Align to right edge of button
+      
+      // Adjust for viewport boundaries
+      const dropdownWidth = window.innerWidth < 640 ? 280 : window.innerWidth < 1024 ? 320 : 360;
+      const dropdownHeight = 400; // Approximate height
+      
+      // Horizontal positioning
+      if (left + dropdownWidth > viewport.width) {
+        left = triggerRect.right - dropdownWidth;
+      }
+      if (left < 8) {
+        left = 8;
+      }
+      
+      // Vertical positioning - show above if not enough space below
+      if (top + dropdownHeight > viewport.height && triggerRect.top > dropdownHeight) {
+        top = triggerRect.top - dropdownHeight - 8;
+      }
+      
+      dropdown.style.position = 'fixed';
+      dropdown.style.top = `${top}px`;
+      dropdown.style.left = `${left}px`;
+      dropdown.style.zIndex = '9999';
+      
+      // Handle scroll to keep dropdown positioned
+      const handleScroll = () => {
+        if (viewAllButtonRef.current && dropdownRef.current) {
+          const newTriggerRect = viewAllButtonRef.current.getBoundingClientRect();
+          let newTop = newTriggerRect.bottom + 8;
+          let newLeft = newTriggerRect.right - dropdownWidth;
+          
+          // Reapply boundary checks
+          if (newLeft + dropdownWidth > viewport.width) {
+            newLeft = newTriggerRect.right - dropdownWidth;
+          }
+          if (newLeft < 8) {
+            newLeft = 8;
+          }
+          
+          if (newTop + dropdownHeight > viewport.height && newTriggerRect.top > dropdownHeight) {
+            newTop = newTriggerRect.top - dropdownHeight - 8;
+          }
+          
+          dropdownRef.current.style.top = `${newTop}px`;
+          dropdownRef.current.style.left = `${newLeft}px`;
+        }
+      };
+      
+      window.addEventListener('scroll', handleScroll, true);
+      window.addEventListener('resize', handleScroll);
+      
+      return () => {
+        window.removeEventListener('scroll', handleScroll, true);
+        window.removeEventListener('resize', handleScroll);
+      };
+    }
+  }, [isDropdownOpen]);
+
+  // Handle click outside dropdown
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -545,28 +615,45 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
                   </Button>
 
                   {isDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-2 w-[280px] sm:w-[320px] lg:w-[360px] bg-white border border-[#e5e7eb] rounded-[12px] shadow-lg overflow-hidden max-h-[90vh] z-[9999] dark:bg-gray-800 dark:border-gray-600">
+                    <div 
+                      ref={dropdownRef}
+                      className="absolute top-full right-0 mt-2 w-[280px] sm:w-[320px] lg:w-[360px] bg-white border border-[#e5e7eb] rounded-[12px] shadow-lg overflow-hidden max-h-[90vh] z-[9999] dark:bg-gray-800 dark:border-gray-600"
+                      style={{
+                        position: 'fixed',
+                        zIndex: 9999
+                      }}
+                    >
                       <div className="p-3 sm:p-4">
+                        {/* Header */}
                         <div className="mb-3 sm:mb-4">
-                          <h3 className="font-semibold text-[14px] sm:text-[16px] text-neutral-100 dark:text-gray-100">
+                          <h3 className="text-[14px] sm:text-[16px] font-semibold text-[#111827] dark:text-gray-100">
                             All Categories
                           </h3>
-                          <p className="text-[12px] sm:text-[13px] text-neutral-new600 dark:text-gray-400">
-                            Select categories to filter creators
-                          </p>
                         </div>
                         
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[300px] overflow-y-auto">
-                          {getOrderedCategories().map((category, index) => (
-                            <Button
-                              key={`dropdown-category-${index}`}
-                              variant="outline"
-                              onClick={() => handleCategorySelect(category)}
-                              className={`h-[32px] py-[4px] px-[8px] rounded-[8px] font-medium text-[12px] transition-colors cursor-pointer flex-shrink-0 border whitespace-nowrap ${getNicheStyles(category, selectedCategories.has(category))}`}
-                            >
-                              {category}
-                            </Button>
-                          ))}
+                        {/* Categories list */}
+                        <div className="max-h-[200px] sm:max-h-[240px] lg:max-h-[280px] overflow-y-auto">
+                          <div className="space-y-2">
+                            {getOrderedCategories().map((category) => (
+                              <div
+                                key={category}
+                                className={`flex items-center space-x-2 sm:space-x-3 p-2 rounded-[6px] cursor-pointer transition-colors ${
+                                  selectedCategories.has(category)
+                                    ? 'bg-orange-100 hover:bg-orange-200 dark:bg-orange-900/20 dark:hover:bg-orange-900/30'
+                                    : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+                                }`}
+                                onClick={() => handleCategorySelect(category)}
+                              >
+                                <span className={`text-[12px] sm:text-[14px] cursor-pointer flex-1 ${
+                                  selectedCategories.has(category)
+                                    ? 'text-orange-700 font-medium dark:text-orange-400'
+                                    : 'text-[#111827] dark:text-gray-200'
+                                }`}>
+                                  {category}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -579,9 +666,9 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
 
         {/* Filter buttons row */}
         <div className="flex items-center justify-between w-full gap-[6px] lg:gap-[8px] xl:gap-[10px]">
-          <div className="flex items-center gap-[6px] lg:gap-[8px] xl:gap-[10px] flex-1 min-w-0 overflow-x-auto">
+          <div className="flex items-center gap-[6px] lg:gap-[8px] xl:gap-[10px] flex-1 min-w-0">
             {filterOptions.map((filter) => (
-              <div key={filter.key} className="relative flex-shrink-0">
+              <div key={filter.key} className="relative flex-1 min-w-0">
                 <Button
                   ref={(el) => {
                     if (filterButtonRefs.current) {
@@ -590,7 +677,7 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
                   }}
                   variant="outline"
                   onClick={() => toggleFilterDropdown(filter.key)}
-                  className={`h-[28px] lg:h-[32px] xl:h-[36px] py-[4px] lg:py-[6px] xl:py-[8px] px-[6px] lg:px-[10px] xl:px-[12px] rounded-[8px] font-medium text-[11px] lg:text-[12px] xl:text-[13px] flex items-center gap-[3px] lg:gap-[4px] xl:gap-[6px] transition-colors cursor-pointer flex-shrink-0 border whitespace-nowrap ${
+                  className={`h-[28px] lg:h-[32px] xl:h-[36px] py-[4px] lg:py-[6px] xl:py-[8px] px-[6px] lg:px-[10px] xl:px-[12px] rounded-[8px] font-medium text-[11px] lg:text-[12px] xl:text-[13px] flex items-center gap-[3px] lg:gap-[4px] xl:gap-[6px] transition-colors cursor-pointer w-full border whitespace-nowrap ${
                     isFilterModified(filter.key)
                       ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/20 dark:border-blue-700 dark:text-blue-400'
                       : 'bg-basewhite border-[#dbe2eb] text-neutral-new900 hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700'

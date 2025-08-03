@@ -29,11 +29,10 @@ export const getSocialMediaIcon = (platform: string): string => {
 };
 
 export const getMatchScoreColor = (score: number): string => {
-  if (score >= 90) return 'text-green-600 bg-green-100';
-  if (score >= 80) return 'text-blue-600 bg-blue-100';
-  if (score >= 70) return 'text-yellow-600 bg-yellow-100';
-  if (score >= 60) return 'text-orange-600 bg-orange-100';
-  return 'text-red-600 bg-red-100';
+  if (score >= 80) return 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20';
+  if (score >= 50) return 'text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/20';
+  if (score >= 30) return 'text-orange-600 bg-orange-100 dark:text-orange-400 dark:bg-orange-900/20';
+  return 'text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-900/20';
 };
 
 export const getBuzzScoreColor = (score: number): string => {
