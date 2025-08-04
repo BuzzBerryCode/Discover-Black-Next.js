@@ -14,8 +14,8 @@
 1. Open the `.env` file in your project root
 2. Replace the placeholder values:
    ```env
-   VITE_SUPABASE_URL=https://your-project-id.supabase.co
-   VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
    ```
 
 ### ✅ Step 3: Verify Your Database Table
@@ -29,17 +29,19 @@ Make sure your `creatordata` table exists with these columns:
 - `primary_niche` (text)
 - `secondary_niche` (text)
 - `location` (text)
+- `locationRegion` (text)
 - `followers_count` (int4)
 - `average_views` (int4)
 - `average_comments` (int4)
 - `engagement_rate` (float8)
 - `buzz_score` (int4)
+- `match_score` (int4)
 - `recent_post_1` through `recent_post_12` (json)
 - All the change fields (`followers_change`, `engagement_rate_change`, etc.)
 
 ### ✅ Step 4: Test the Connection
 1. Start your development server: `npm run dev`
-2. Open the discover page
+2. Open the discover page at `http://localhost:3000/discover`
 3. Check the browser console for any connection errors
 4. Verify that creators are loading from your database
 
@@ -49,7 +51,7 @@ Make sure your `creatordata` table exists with these columns:
 
 **❌ "Missing Supabase environment variables"**
 - Check that your `.env` file is in the project root
-- Verify variable names start with `VITE_`
+- Verify variable names start with `NEXT_PUBLIC_`
 - Restart your dev server after adding variables
 
 **❌ "Failed to load creators"**
@@ -77,8 +79,9 @@ FOR SELECT TO anon USING (true);
 - ✅ Follower counts and engagement rates
 - ✅ Recent posts and thumbnails
 - ✅ Niches and categories
-- ✅ Location data
+- ✅ Location data (filtering uses `location`, display uses `locationRegion`)
 - ✅ Buzz scores
+- ✅ Match scores for AI recommendations
 - ✅ All change metrics with trend indicators
 
 ### ✅ Filtering System:
