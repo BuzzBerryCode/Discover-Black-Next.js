@@ -6,6 +6,8 @@ A modern, responsive React-based discover page for creators, built with Vite, Ty
 
 **IMPORTANT**: This repository is configured for secure deployment. Never commit your actual `.env` file to version control.
 
+**⚠️ SECURITY UPDATE**: If you are using the Supabase credentials from previous versions of this repository, please rotate your API keys immediately as they may have been exposed in the git history. Generate new keys from your Supabase dashboard.
+
 ## 🛠️ Quick Setup
 
 ### Prerequisites
