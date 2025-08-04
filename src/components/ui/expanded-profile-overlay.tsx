@@ -72,7 +72,7 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
           setEmailButtonText('Copy Email ID');
         }, 2000);
       } catch (err) {
-        // Removed debug logging for security
+        
       }
     }
   };
