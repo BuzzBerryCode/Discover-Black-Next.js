@@ -1,10 +1,10 @@
 import React from "react";
-import { Card, CardContent } from "../../ui/card";
-import { Checkbox } from "../../ui/checkbox";
-import { Badge } from "../../ui/badge";
-import { Icon } from "../../ui/icon";
-import { formatNumber, getSocialMediaIcon, getMatchScoreColor } from "../../../utils/formatters";
-import { Creator } from "../../../types/database";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { Icon } from "@/components/ui/icon";
+import { formatNumber, getSocialMediaIcon, getMatchScoreColor, getMatchScoreStyle } from "@/utils/formatters";
+import { Creator } from "@/types/database";
 
 interface CreatorCardProps {
   creator: Creator;
@@ -65,8 +65,8 @@ const CreatorCard: React.FC<CreatorCardProps> = ({
         </div>
         <div className="flex items-center gap-[7px]">
           {currentMode === "ai" && (
-            <div className={`flex items-center justify-center px-[6px] py-[3px] rounded-[6px] ml-[1px] ${getMatchScoreColor(creator.match_score || 0)}`}>
-              <span className="font-bold text-[11px] leading-[14px]">{creator.match_score || 0}%</span>
+            <div style={getMatchScoreStyle(creator.match_score || 0)}>
+              <span>{creator.match_score || 0}%</span>
             </div>
           )}
           <Checkbox

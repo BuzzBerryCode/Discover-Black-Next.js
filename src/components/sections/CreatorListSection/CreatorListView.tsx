@@ -1,10 +1,11 @@
 import React from "react";
-import { Badge } from "../../ui/badge";
-import { Checkbox } from "../../ui/checkbox";
-import { Icon } from "../../ui/icon";
-import { DonutChart } from "../../ui/donut-chart";
-import { formatNumber, getSocialMediaIcon, getMatchScoreColor } from "../../../utils/formatters";
-import { Creator, SortState, SortField } from "../../../types/database";
+import { Card } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { Icon } from "@/components/ui/icon";
+import { DonutChart } from "@/components/ui/donut-chart";
+import { formatNumber, getSocialMediaIcon, getMatchScoreColor, getMatchScoreStyle } from "@/utils/formatters";
+import { Creator, SortState, SortField } from "@/types/database";
 
 interface CreatorListViewProps {
   creators: Creator[];
@@ -136,7 +137,7 @@ const CreatorListView: React.FC<CreatorListViewProps> = ({
             {/* Match Score - Only show in AI mode */}
             {currentMode === 'ai' && (
               <div className="flex justify-center">
-                <div className={`px-2 md:px-3 py-1 rounded-md text-xs lg:text-[13px] xl:text-[14px] font-bold ${getMatchScoreColor(creator.match_score || 0)}`}>
+                <div style={getMatchScoreStyle(creator.match_score || 0)}>
                   {creator.match_score || 0}%
                 </div>
               </div>

@@ -29,10 +29,54 @@ export const getSocialMediaIcon = (platform: string): string => {
 };
 
 export const getMatchScoreColor = (score: number): string => {
-  if (score >= 80) return 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/20';
-  if (score >= 50) return 'text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/20';
-  if (score >= 30) return 'text-orange-600 bg-orange-100 dark:text-orange-400 dark:bg-orange-900/20';
-  return 'text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-900/20';
+  // Return empty string since we're using inline styles only
+  return '';
+};
+
+export const getMatchScoreStyle = (score: number): React.CSSProperties => {
+  // Enhanced inline styles to match the original Vite version
+  const baseStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '3px 6px',
+    borderRadius: '6px',
+    marginLeft: '1px',
+    fontWeight: '600',
+    fontSize: '11px',
+    lineHeight: '14px',
+    color: 'white',
+    textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)',
+  };
+
+  if (score >= 80) {
+    return { 
+      ...baseStyle, 
+      backgroundColor: '#16a34a', // darker green for better contrast
+      borderColor: 'rgba(255, 255, 255, 0.2)',
+    };
+  }
+  if (score >= 50) {
+    return { 
+      ...baseStyle, 
+      backgroundColor: '#ca8a04', // darker yellow for better contrast
+      borderColor: 'rgba(255, 255, 255, 0.2)',
+    };
+  }
+  if (score >= 30) {
+    return { 
+      ...baseStyle, 
+      backgroundColor: '#ea580c', // darker orange for better contrast
+      borderColor: 'rgba(255, 255, 255, 0.2)',
+    };
+  }
+  return { 
+    ...baseStyle, 
+    backgroundColor: '#dc2626', // darker red for better contrast
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  };
 };
 
 export const getBuzzScoreColor = (score: number): string => {

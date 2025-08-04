@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Icon } from "./icon";
-import { CreatorListMode } from "../../types/database";
+import { CreatorListMode } from "@/types/database";
 
 interface AIToggleProps {
   value: CreatorListMode;
@@ -11,7 +11,7 @@ interface AIToggleProps {
 export const AIToggle: React.FC<AIToggleProps> = ({ value, onChange, className = "" }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const infoButtonRef = useRef<HTMLButtonElement>(null);
+  const infoButtonRef = useRef<HTMLDivElement>(null);
 
   // Close tooltip when clicking outside
   useEffect(() => {
@@ -51,20 +51,20 @@ export const AIToggle: React.FC<AIToggleProps> = ({ value, onChange, className =
           }`}
         >
           <span className="whitespace-nowrap">AI Recommendations</span>
-          <button
+          <div
             ref={infoButtonRef}
             onClick={(e) => {
               e.stopPropagation();
               setShowTooltip(!showTooltip);
             }}
-            className="flex items-center justify-center w-[16px] h-[16px] lg:w-[18px] lg:h-[18px] xl:w-[20px] xl:h-[20px] flex-shrink-0"
+            className="flex items-center justify-center w-[16px] h-[16px] lg:w-[18px] lg:h-[18px] xl:w-[20px] xl:h-[20px] flex-shrink-0 cursor-pointer"
           >
             <Icon
               name="InformationIcon.svg"
               className="w-[14px] h-[14px] lg:w-[16px] lg:h-[16px] xl:w-[18px] xl:h-[18px] text-gray-500 dark:text-gray-400"
               alt="Information"
             />
-          </button>
+          </div>
         </button>
 
         {/* All Creators Option */}

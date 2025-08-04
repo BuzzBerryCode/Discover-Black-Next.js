@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Badge } from "../../ui/badge";
-import { Button } from "../../ui/button";
-import { Card } from "../../ui/card";
-import { Separator } from "../../ui/separator";
-import { Icon } from "../../ui/icon";
-import { AIToggle } from "../../ui/ai-toggle";
-import { FilterDropdown } from "../../ui/filter-dropdown";
-import { LocationFilterDropdown } from "../../ui/location-filter-dropdown";
-import { PlatformFilterDropdown } from "../../ui/platform-filter-dropdown";
-import { BuzzScoreFilterDropdown } from "../../ui/buzz-score-filter-dropdown";
-import { DatabaseFilters, CreatorListMode } from "../../../types/database";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Icon } from "@/components/ui/icon";
+import { AIToggle } from "@/components/ui/ai-toggle";
+import { FilterDropdown } from "@/components/ui/filter-dropdown";
+import { LocationFilterDropdown } from "@/components/ui/location-filter-dropdown";
+import { PlatformFilterDropdown } from "@/components/ui/platform-filter-dropdown";
+import { BuzzScoreFilterDropdown } from "@/components/ui/buzz-score-filter-dropdown";
+import { DatabaseFilters, CreatorListMode } from "@/types/database";
 
 interface CreatorFilterSectionProps {
   creatorData: {
@@ -535,7 +535,7 @@ export const CreatorFilterSection: React.FC<CreatorFilterSectionProps> = ({ crea
   }, [isDropdownOpen]);
 
   return (
-    <Card className="p-[12px] lg:p-[15px] xl:p-[18px] w-full bg-white rounded-[10px] flex-shrink-0 shadow-sm overflow-visible border-0">
+    <Card className="p-[12px] lg:p-[15px] xl:p-[18px] w-full bg-section-bg rounded-[10px] flex-shrink-0 shadow-sm overflow-visible border-0">
       <div className="flex flex-col gap-[10px] lg:gap-[12px] xl:gap-[15px] w-full">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-[10px] lg:gap-[12px] xl:gap-[15px]">

@@ -3,7 +3,7 @@ import { Icon } from './icon';
 import { Badge } from './badge';
 import { Button } from './button';
 import { Creator } from '../../types/database';
-import { formatNumber, getSocialMediaIcon, getMatchScoreColor } from '../../utils/formatters';
+import { formatNumber, getSocialMediaIcon, getMatchScoreColor, getMatchScoreStyle } from '../../utils/formatters';
 
 interface ExpandedProfileOverlayProps {
   creator: Creator;
@@ -202,7 +202,14 @@ export const ExpandedProfileOverlay: React.FC<ExpandedProfileOverlayProps> = ({
           {/* Match Score and Close Button */}
           <div className="flex items-center gap-[6px] md:gap-[8px] lg:gap-[10px] flex-shrink-0">
             {currentMode === 'ai' && (
-              <div className={`px-[8px] md:px-[12px] lg:px-[16px] py-[4px] md:py-[6px] lg:py-[8px] rounded-[12px] md:rounded-[16px] font-bold text-[11px] md:text-[13px] lg:text-[15px] shadow-sm border ${getMatchScoreColor(creator.match_score || 0)}`}>
+              <div style={{
+                ...getMatchScoreStyle(creator.match_score || 0),
+                padding: '4px 8px',
+                borderRadius: '12px',
+                fontSize: '13px',
+                boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.2)'
+              }}>
                 Match {creator.match_score || 0}%
               </div>
             )}

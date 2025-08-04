@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, CardContent } from "../../ui/card";
-import { Icon } from "../../ui/icon";
-import { formatPercentage, getTrendIcon, getTrendColor } from "../../../utils/formatters";
+import { Card, CardContent } from "@/components/ui/card";
+import { Icon } from "@/components/ui/icon";
+import { formatPercentage, getTrendIcon, getTrendColor } from "@/utils/formatters";
 
 interface MetricsTitleSectionProps {
   creatorData: {
@@ -55,7 +55,7 @@ export const MetricsTitleSection: React.FC<MetricsTitleSectionProps> = ({ creato
         <div className="hidden lg:block h-[50px] lg:h-[55px] w-px bg-[#e1e5e9] mx-4 lg:mx-5 flex-shrink-0 dark:bg-gray-600" />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-[6px] lg:gap-[8px] xl:gap-[10px] w-full lg:w-auto lg:flex-1 lg:max-w-none">
           {Array(4).fill(0).map((_, index) => (
-            <Card key={index} className="bg-white rounded-[10px] border-0 shadow-sm h-[60px] lg:h-[65px] xl:h-[70px] w-full animate-pulse">
+            <Card key={index} className="bg-white rounded-[10px] border-0 shadow-sm h-[60px] lg:h-[65px] xl:h-[70px] w-full animate-pulse dark:bg-gray-800">
               <CardContent className="flex items-center gap-[8px] lg:gap-[10px] xl:gap-[12px] px-[8px] lg:px-[12px] xl:px-[14px] py-[8px] lg:py-[10px] xl:py-[12px] h-full">
                 <div className="w-[28px] h-[28px] lg:w-[32px] lg:h-[32px] xl:w-[36px] xl:h-[36px] bg-gray-200 rounded-full flex-shrink-0 dark:bg-gray-600" />
                 <div className="flex flex-col justify-center h-[35px] lg:h-[40px] xl:h-[45px] min-w-[50px] lg:min-w-[60px] xl:min-w-[70px] flex-1">
@@ -89,7 +89,7 @@ export const MetricsTitleSection: React.FC<MetricsTitleSectionProps> = ({ creato
       {/* Dynamic Metric cards - Responsive grid with smaller sizing */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-[6px] lg:gap-[8px] xl:gap-[10px] w-full lg:w-auto lg:flex-1 lg:max-w-none">
         {metricConfigs.map((metric, index) => (
-          <Card key={index} className="bg-white rounded-[10px] border-0 shadow-sm h-[60px] lg:h-[65px] xl:h-[70px] w-full">
+          <Card key={index} className="bg-section-bg rounded-[10px] border-0 shadow-sm h-[60px] lg:h-[65px] xl:h-[70px] w-full">
             <CardContent className="flex items-center gap-[8px] lg:gap-[10px] xl:gap-[12px] px-[8px] lg:px-[12px] xl:px-[14px] py-[8px] lg:py-[10px] xl:py-[12px] h-full">
               {/* Icon - Smaller responsive sizing */}
               <div className="flex items-center justify-center flex-shrink-0">

@@ -1,10 +1,10 @@
 import React from "react";
-import { Creator } from "../../../types/database";
+import { Creator } from "@/types/database";
 import CreatorCard from "./CreatorCard";
 
 interface CreatorGridViewProps {
   creators: Creator[];
-  currentMode: string;
+  currentMode: 'ai' | 'all';
   selectedCards: Set<string>;
   handleCreatorClick: (creator: Creator) => void;
   handleCardSelection: (creatorId: string) => void;
@@ -28,7 +28,7 @@ const CreatorGridView: React.FC<CreatorGridViewProps> = ({
         selected={selectedCards.has(creator.id)}
         selectedCreator={selectedCreator}
         onClick={() => handleCreatorClick(creator)}
-        onCheckboxChange={(checked) => {
+        onCheckboxChange={(checked: boolean) => {
           handleCardSelection(creator.id);
         }}
       />

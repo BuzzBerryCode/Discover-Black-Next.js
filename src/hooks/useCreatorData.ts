@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { supabase, CreatorData } from '../lib/supabase';
-import { Creator, CreatorMetrics, Niche, DatabaseFilters, CreatorListMode, SortField, SortState } from '../types/database';
-import { getDisplayLocation, normalizeCountry, parseLocationManually, getRegionForFilter, getAvailableRegions } from '../utils/locationParser';
+import { useState, useEffect, useCallback } from 'react';
+import { supabase } from '@/lib/supabase';
+import { Creator, DatabaseFilters, CreatorListMode, ViewMode, SortField, SortDirection, SortState, Niche, CreatorMetrics } from '@/types/database';
+import { parseLocationManually, getDisplayLocation } from '@/utils/locationParser';
 
 // Pagination configuration
 const CREATORS_PER_PAGE = 24;
@@ -344,12 +344,13 @@ const fetchCreatorMetrics = async (filters: DatabaseFilters = {}, setTotalCount?
     }
   }
   if (filters.buzz_scores?.length) {
-    const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
-    const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
+    // For now, skip buzz_score filtering to show all data
+    // const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
+    // const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
     
-    if (!hasLessThan60 && hasOtherRanges) {
-      query = query.eq('buzz_score', 999999);
-    }
+    // if (!hasLessThan60 && hasOtherRanges) {
+    //   query = query.eq('buzz_score', 999999);
+    // }
   }
   if (filters.locations?.length) {
     query = query.in('location', filters.locations);
@@ -388,13 +389,19 @@ export const useCreatorData = () => {
   
   // Initialize state from localStorage or defaults
   const [currentMode, setCurrentMode] = useState<CreatorListMode>(() => {
-    const saved = localStorage.getItem('discover_currentMode');
-    return (saved as CreatorListMode) || 'ai';
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('discover_currentMode');
+      return (saved as CreatorListMode) || 'ai';
+    }
+    return 'ai';
   });
   
   const [currentPage, setCurrentPage] = useState(() => {
-    const saved = localStorage.getItem('discover_currentPage');
-    return saved ? parseInt(saved, 10) : 1;
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('discover_currentPage');
+      return saved ? parseInt(saved, 10) : 1;
+    }
+    return 1;
   });
   
   const [totalPages, setTotalPages] = useState(1);
@@ -405,22 +412,30 @@ export const useCreatorData = () => {
   
   // Add currentFilters state with localStorage persistence
   const [currentFilters, setCurrentFilters] = useState<DatabaseFilters>(() => {
-    const saved = localStorage.getItem('discover_currentFilters');
-    return saved ? JSON.parse(saved) : {};
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('discover_currentFilters');
+      return saved ? JSON.parse(saved) : {};
+    }
+    return {};
   });
   
   const [totalFilteredCount, setTotalFilteredCount] = useState(0);
   const [sortState, setSortState] = useState<SortState>(() => {
-    const saved = localStorage.getItem('discover_sortState');
-    return saved ? JSON.parse(saved) : { field: null, direction: 'desc' };
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('discover_sortState');
+      return saved ? JSON.parse(saved) : { field: null, direction: 'desc' };
+    }
+    return { field: null, direction: 'desc' };
   });
 
   // Helper functions to save state to localStorage
   const saveToLocalStorage = (key: string, value: any) => {
-    try {
-      localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
-    } catch (error) {
-      // Failed to save to localStorage - continue silently
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
+      } catch (error) {
+        // Failed to save to localStorage - continue silently
+      }
     }
   };
 
@@ -827,12 +842,13 @@ export const useCreatorData = () => {
         }
       }
       if (filters.buzz_scores?.length) {
-        const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
-        const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
+        // For now, skip buzz_score filtering to show all data
+        // const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
+        // const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
         
-        if (!hasLessThan60 && hasOtherRanges) {
-          countQuery = countQuery.eq('buzz_score', 999999);
-        }
+        // if (!hasLessThan60 && hasOtherRanges) {
+        //   countQuery = countQuery.eq('buzz_score', 999999);
+        // }
       }
       if (filters.locations?.length) {
         countQuery = countQuery.in('location', filters.locations);
@@ -885,12 +901,13 @@ export const useCreatorData = () => {
         }
       }
       if (filters.buzz_scores?.length) {
-        const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
-        const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
+        // For now, skip buzz_score filtering to show all data
+        // const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
+        // const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
         
-        if (!hasLessThan60 && hasOtherRanges) {
-          query = query.eq('buzz_score', 999999);
-        }
+        // if (!hasLessThan60 && hasOtherRanges) {
+        //   query = query.eq('buzz_score', 999999);
+        // }
       }
       if (filters.locations?.length) {
         query = query.in('location', filters.locations);

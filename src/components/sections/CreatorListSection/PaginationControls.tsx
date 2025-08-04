@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "../../ui/button";
-import { Icon } from "../../ui/icon";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 
 interface PaginationControlsProps {
   currentPage: number;

@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Badge } from "../../ui/badge";
-import { Button } from "../../ui/button";
-import { Card, CardContent } from "../../ui/card";
-import { Checkbox } from "../../ui/checkbox";
-import { Separator } from "../../ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "../../ui/toggle-group";
-import { Icon } from "../../ui/icon";
-import { DonutChart } from "../../ui/donut-chart";
-import { ExpandedProfileOverlay } from "../../ui/expanded-profile-overlay";
-import { formatNumber, formatEngagement, getSocialMediaIcon, getMatchScoreColor } from "../../../utils/formatters";
-import { ViewMode, SortField, SortDirection, SortState, Creator, CreatorListMode } from "../../../types/database";
+} from "@/components/ui/toggle-group";
+import { Icon } from "@/components/ui/icon";
+import { DonutChart } from "@/components/ui/donut-chart";
+import { ExpandedProfileOverlay } from "@/components/ui/expanded-profile-overlay";
+import { formatNumber, formatEngagement, getSocialMediaIcon, getMatchScoreColor } from "@/utils/formatters";
+import { ViewMode, SortField, SortDirection, SortState, Creator, CreatorListMode } from "@/types/database";
 
 interface CreatorListSectionProps {
   creatorData: {
@@ -106,7 +106,7 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
 
   if (loading) {
     return (
-      <section className="flex flex-col items-start gap-[5px] p-[15px] lg:p-[20px] xl:p-[25px] bg-white rounded-[12px] flex-1 overflow-hidden shadow-sm">
+      <section className="flex flex-col items-start gap-[5px] p-[15px] lg:p-[20px] xl:p-[25px] bg-section-bg rounded-[12px] flex-1 overflow-hidden shadow-sm">
         <div className="w-full h-[100px] bg-gray-100 rounded-lg animate-pulse mb-4 dark:bg-gray-700" />
         <div className="flex-1 overflow-y-auto w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-[12px] lg:gap-[15px] xl:gap-[18px] 2xl:gap-[20px] w-full pb-4">
@@ -150,7 +150,7 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
 
   if (error) {
     return (
-      <section className="flex flex-col items-center justify-center gap-4 p-[15px] lg:p-[20px] xl:p-[25px] bg-white rounded-[12px] flex-1 overflow-hidden shadow-sm">
+      <section className="flex flex-col items-center justify-center gap-4 p-[15px] lg:p-[20px] xl:p-[25px] bg-section-bg rounded-[12px] flex-1 overflow-hidden shadow-sm">
         <div className="text-red-500 text-lg font-medium">Error loading creators</div>
         <div className="text-gray-600 text-sm dark:text-gray-400">{error}</div>
         <Button onClick={() => window.location.reload()} variant="outline">
@@ -161,7 +161,7 @@ export const CreatorListSection: React.FC<CreatorListSectionProps> = ({ creatorD
   }
 
   return (
-    <section className="flex flex-col items-start gap-[5px] p-[15px] lg:p-[20px] xl:p-[25px] bg-white rounded-[12px] flex-1 overflow-hidden shadow-sm">
+    <section className="flex flex-col items-start gap-[5px] p-[15px] lg:p-[20px] xl:p-[25px] bg-section-bg rounded-[12px] flex-1 overflow-hidden shadow-sm">
       {/* Header with controls */}
       <header className="flex flex-col sm:flex-row sm:items-center justify-between w-full flex-shrink-0 mb-[10px] gap-3 sm:gap-4 xl:gap-6 min-w-0 overflow-hidden">
         {/* Left side - View mode toggle */}

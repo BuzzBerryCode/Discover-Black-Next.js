@@ -4,7 +4,7 @@ import { Badge } from './badge';
 import { DonutChart } from './donut-chart';
 import { ExpandedProfileOverlay } from './expanded-profile-overlay';
 import { Creator } from '../../types/database';
-import { formatNumber, getSocialMediaIcon, getMatchScoreColor } from '../../utils/formatters';
+import { formatNumber, getSocialMediaIcon, getMatchScoreColor, getMatchScoreStyle } from '../../utils/formatters';
 
 interface CreatorCardProps {
   creator: Creator;
@@ -58,8 +58,8 @@ export const CreatorCard: React.FC<CreatorCardProps> = ({
           <div className="flex items-center gap-[4px] lg:gap-[6px] xl:gap-[8px] flex-shrink-0">
             {/* Match Score - Only show if showMatchScore is true */}
             {showMatchScore && creator.match_score && (
-              <div className={`flex items-center justify-center px-[6px] lg:px-[8px] xl:px-[10px] py-[3px] lg:py-[4px] xl:py-[5px] rounded-[6px] ${getMatchScoreColor(creator.match_score)}`}>
-                <span className="font-bold text-[11px] lg:text-[12px] xl:text-[13px] leading-[14px] lg:leading-[16px] xl:leading-[18px]">
+              <div style={getMatchScoreStyle(creator.match_score)}>
+                <span>
                   {creator.match_score}%
                 </span>
               </div>
