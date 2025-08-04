@@ -344,13 +344,68 @@ const fetchCreatorMetrics = async (filters: DatabaseFilters = {}, setTotalCount?
     }
   }
   if (filters.buzz_scores?.length) {
-    // For now, skip buzz_score filtering to show all data
-    // const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
-    // const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
+    // Build buzz score range conditions
+    const conditions: string[] = [];
     
-    // if (!hasLessThan60 && hasOtherRanges) {
-    //   query = query.eq('buzz_score', 999999);
-    // }
+    filters.buzz_scores.forEach(scoreRange => {
+      switch (scoreRange) {
+        case '90%+':
+          conditions.push('buzz_score.gte.90');
+          break;
+        case '80-90%':
+          conditions.push('and(buzz_score.gte.80,buzz_score.lt.90)');
+          break;
+        case '70-80%':
+          conditions.push('and(buzz_score.gte.70,buzz_score.lt.80)');
+          break;
+        case '60-70%':
+          conditions.push('and(buzz_score.gte.60,buzz_score.lt.70)');
+          break;
+        case 'Less than 60%':
+          conditions.push('buzz_score.lt.60');
+          break;
+      }
+    });
+    
+    if (conditions.length === 1) {
+      // Single condition
+      const condition = conditions[0];
+      if (condition.startsWith('and(')) {
+        // Handle range conditions like 80-90%
+        const match = condition.match(/and\(buzz_score\.gte\.(\d+),buzz_score\.lt\.(\d+)\)/);
+        if (match) {
+          query = query.gte('buzz_score', parseInt(match[1])).lt('buzz_score', parseInt(match[2]));
+        }
+      } else if (condition.includes('.gte.')) {
+        const value = parseInt(condition.split('.gte.')[1]);
+        query = query.gte('buzz_score', value);
+      } else if (condition.includes('.lt.')) {
+        const value = parseInt(condition.split('.lt.')[1]);
+        query = query.lt('buzz_score', value);
+      }
+    } else if (conditions.length > 1) {
+      // Multiple conditions - use OR logic
+      const orConditions: string[] = [];
+      
+      conditions.forEach(condition => {
+        if (condition.startsWith('and(')) {
+          const match = condition.match(/and\(buzz_score\.gte\.(\d+),buzz_score\.lt\.(\d+)\)/);
+          if (match) {
+            orConditions.push(`and(buzz_score.gte.${match[1]},buzz_score.lt.${match[2]})`);
+          }
+        } else if (condition.includes('.gte.')) {
+          const value = condition.split('.gte.')[1];
+          orConditions.push(`buzz_score.gte.${value}`);
+        } else if (condition.includes('.lt.')) {
+          const value = condition.split('.lt.')[1];
+          orConditions.push(`buzz_score.lt.${value}`);
+        }
+      });
+      
+      if (orConditions.length > 0) {
+        query = query.or(orConditions.join(','));
+      }
+    }
   }
   if (filters.locations?.length) {
     query = query.in('location', filters.locations);
@@ -842,13 +897,68 @@ export const useCreatorData = () => {
         }
       }
       if (filters.buzz_scores?.length) {
-        // For now, skip buzz_score filtering to show all data
-        // const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
-        // const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
+        // Build buzz score range conditions for count query
+        const conditions: string[] = [];
         
-        // if (!hasLessThan60 && hasOtherRanges) {
-        //   countQuery = countQuery.eq('buzz_score', 999999);
-        // }
+        filters.buzz_scores.forEach(scoreRange => {
+          switch (scoreRange) {
+            case '90%+':
+              conditions.push('buzz_score.gte.90');
+              break;
+            case '80-90%':
+              conditions.push('and(buzz_score.gte.80,buzz_score.lt.90)');
+              break;
+            case '70-80%':
+              conditions.push('and(buzz_score.gte.70,buzz_score.lt.80)');
+              break;
+            case '60-70%':
+              conditions.push('and(buzz_score.gte.60,buzz_score.lt.70)');
+              break;
+            case 'Less than 60%':
+              conditions.push('buzz_score.lt.60');
+              break;
+          }
+        });
+        
+        if (conditions.length === 1) {
+          // Single condition
+          const condition = conditions[0];
+          if (condition.startsWith('and(')) {
+            // Handle range conditions like 80-90%
+            const match = condition.match(/and\(buzz_score\.gte\.(\d+),buzz_score\.lt\.(\d+)\)/);
+            if (match) {
+              countQuery = countQuery.gte('buzz_score', parseInt(match[1])).lt('buzz_score', parseInt(match[2]));
+            }
+          } else if (condition.includes('.gte.')) {
+            const value = parseInt(condition.split('.gte.')[1]);
+            countQuery = countQuery.gte('buzz_score', value);
+          } else if (condition.includes('.lt.')) {
+            const value = parseInt(condition.split('.lt.')[1]);
+            countQuery = countQuery.lt('buzz_score', value);
+          }
+        } else if (conditions.length > 1) {
+          // Multiple conditions - use OR logic
+          const orConditions: string[] = [];
+          
+          conditions.forEach(condition => {
+            if (condition.startsWith('and(')) {
+              const match = condition.match(/and\(buzz_score\.gte\.(\d+),buzz_score\.lt\.(\d+)\)/);
+              if (match) {
+                orConditions.push(`and(buzz_score.gte.${match[1]},buzz_score.lt.${match[2]})`);
+              }
+            } else if (condition.includes('.gte.')) {
+              const value = condition.split('.gte.')[1];
+              orConditions.push(`buzz_score.gte.${value}`);
+            } else if (condition.includes('.lt.')) {
+              const value = condition.split('.lt.')[1];
+              orConditions.push(`buzz_score.lt.${value}`);
+            }
+          });
+          
+          if (orConditions.length > 0) {
+            countQuery = countQuery.or(orConditions.join(','));
+          }
+        }
       }
       if (filters.locations?.length) {
         countQuery = countQuery.in('location', filters.locations);
@@ -901,13 +1011,68 @@ export const useCreatorData = () => {
         }
       }
       if (filters.buzz_scores?.length) {
-        // For now, skip buzz_score filtering to show all data
-        // const hasLessThan60 = filters.buzz_scores.includes('Less than 60%');
-        // const hasOtherRanges = filters.buzz_scores.some(range => range !== 'Less than 60%');
+        // Build buzz score range conditions for data query
+        const conditions: string[] = [];
         
-        // if (!hasLessThan60 && hasOtherRanges) {
-        //   query = query.eq('buzz_score', 999999);
-        // }
+        filters.buzz_scores.forEach(scoreRange => {
+          switch (scoreRange) {
+            case '90%+':
+              conditions.push('buzz_score.gte.90');
+              break;
+            case '80-90%':
+              conditions.push('and(buzz_score.gte.80,buzz_score.lt.90)');
+              break;
+            case '70-80%':
+              conditions.push('and(buzz_score.gte.70,buzz_score.lt.80)');
+              break;
+            case '60-70%':
+              conditions.push('and(buzz_score.gte.60,buzz_score.lt.70)');
+              break;
+            case 'Less than 60%':
+              conditions.push('buzz_score.lt.60');
+              break;
+          }
+        });
+        
+        if (conditions.length === 1) {
+          // Single condition
+          const condition = conditions[0];
+          if (condition.startsWith('and(')) {
+            // Handle range conditions like 80-90%
+            const match = condition.match(/and\(buzz_score\.gte\.(\d+),buzz_score\.lt\.(\d+)\)/);
+            if (match) {
+              query = query.gte('buzz_score', parseInt(match[1])).lt('buzz_score', parseInt(match[2]));
+            }
+          } else if (condition.includes('.gte.')) {
+            const value = parseInt(condition.split('.gte.')[1]);
+            query = query.gte('buzz_score', value);
+          } else if (condition.includes('.lt.')) {
+            const value = parseInt(condition.split('.lt.')[1]);
+            query = query.lt('buzz_score', value);
+          }
+        } else if (conditions.length > 1) {
+          // Multiple conditions - use OR logic
+          const orConditions: string[] = [];
+          
+          conditions.forEach(condition => {
+            if (condition.startsWith('and(')) {
+              const match = condition.match(/and\(buzz_score\.gte\.(\d+),buzz_score\.lt\.(\d+)\)/);
+              if (match) {
+                orConditions.push(`and(buzz_score.gte.${match[1]},buzz_score.lt.${match[2]})`);
+              }
+            } else if (condition.includes('.gte.')) {
+              const value = condition.split('.gte.')[1];
+              orConditions.push(`buzz_score.gte.${value}`);
+            } else if (condition.includes('.lt.')) {
+              const value = condition.split('.lt.')[1];
+              orConditions.push(`buzz_score.lt.${value}`);
+            }
+          });
+          
+          if (orConditions.length > 0) {
+            query = query.or(orConditions.join(','));
+          }
+        }
       }
       if (filters.locations?.length) {
         query = query.in('location', filters.locations);
